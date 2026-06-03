@@ -23,7 +23,10 @@ services:
     instance_count: 1
     http_port: 8080
 
-    build_command: npm ci && npm run build
+    # npm install (not `npm ci`) — lockfile has darwin-only optionalDependencies
+    # (@next/swc-darwin-arm64, @tailwindcss/oxide-darwin-arm64, etc.) and `npm ci`
+    # treats the platform mismatch on DO's Linux builder as a hard fail.
+    build_command: npm install --no-audit --no-fund && npm run build
     # DO sets $PORT; bind 0.0.0.0 so the platform's healthcheck can reach us.
     run_command: npm start -- --port $PORT --hostname 0.0.0.0
 
