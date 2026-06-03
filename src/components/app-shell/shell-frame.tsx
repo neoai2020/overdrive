@@ -11,9 +11,13 @@ const COLLAPSE_KEY = "od.sidebar.collapsed";
 
 export function ShellFrame({
   user,
+  creditsTotal,
+  creditsUsed,
   children,
 }: {
   user: { email: string | null; full_name: string | null; avatar_url: string | null } | null;
+  creditsTotal: number;
+  creditsUsed: number;
   children: React.ReactNode;
 }) {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -26,7 +30,17 @@ export function ShellFrame({
     if (v === "1") setCollapsed(true);
   }, []);
 
-  // Global keyboard shortcuts
+  React.useEffect(() => {
+    function onCampaign() { setCampaignOpen(true); }
+    function onGenerate() { setGenerateOpen(true); }
+    window.addEventListener("od:open-campaign-builder", onCampaign);
+    window.addEventListener("od:open-generate-wizard", onGenerate);
+    return () => {
+      window.removeEventListener("od:open-campaign-builder", onCampaign);
+      window.removeEventListener("od:open-generate-wizard", onGenerate);
+    };
+  }, []);
+
   React.useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null;
@@ -35,13 +49,11 @@ export function ShellFrame({
       );
       const isMeta = e.metaKey || e.ctrlKey;
 
-      // ⌘K → palette
       if (isMeta && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setPaletteOpen((o) => !o);
         return;
       }
-      // ⌘C / ⌘G as palette shortcuts (only when palette is closed AND not typing)
       if (isMeta && !isTyping && !paletteOpen) {
         if (e.key.toLowerCase() === "c") { e.preventDefault(); setCampaignOpen(true); return; }
         if (e.key.toLowerCase() === "g") { e.preventDefault(); setGenerateOpen(true); return; }
@@ -57,16 +69,22 @@ export function ShellFrame({
   };
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar collapsed={collapsed} onCollapsedChange={onCollapse} />
-      <div className="flex-1 flex flex-col min-w-0">
+    <div className="grid min-h-screen bg-[color:var(--color-bg)] [grid-template-columns:auto_1fr]">
+      <Sidebar
+        collapsed={collapsed}
+        onCollapsedChange={onCollapse}
+        user={user}
+        creditsTotal={creditsTotal}
+        creditsUsed={creditsUsed}
+        onLaunchCampaignBuilder={() => setCampaignOpen(true)}
+        onLaunchGenerateAds={() => setGenerateOpen(true)}
+      />
+      <div className="flex min-w-0 flex-col">
         <TopBar
-          user={user}
           onOpenPalette={() => setPaletteOpen(true)}
           onLaunchCampaignBuilder={() => setCampaignOpen(true)}
-          onLaunchGenerateAds={() => setGenerateOpen(true)}
         />
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
       </div>
 
       <CommandPalette

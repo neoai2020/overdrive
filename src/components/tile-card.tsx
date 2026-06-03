@@ -13,35 +13,31 @@ interface TileCardProps {
   className?: string;
 }
 
-const accentClass = {
-  acid:   "from-[color:var(--color-acid)]/15 to-transparent text-[color:var(--color-acid)]",
-  blue:   "from-[color:var(--color-blue)]/15 to-transparent text-[color:var(--color-blue)]",
-  amber:  "from-[color:var(--color-amber)]/15 to-transparent text-[color:var(--color-amber)]",
-  violet: "from-[color:var(--color-violet)]/15 to-transparent text-[color:var(--color-violet)]",
+const iconBg = {
+  acid:   "bg-[color:var(--color-acid)]/12 text-[color:var(--color-acid)]",
+  blue:   "bg-[color:var(--color-blue)]/12 text-[color:var(--color-blue)]",
+  amber:  "bg-[color:var(--color-amber)]/12 text-[color:var(--color-amber)]",
+  violet: "bg-[color:var(--color-violet)]/12 text-[color:var(--color-violet)]",
 };
 
+/** Matches prototype `.tool` cards. */
 export function TileCard({ icon: Icon, title, description, href, meta, accent = "acid", className }: TileCardProps) {
   return (
     <Link
       href={href}
       className={cn(
-        "group relative rounded-lg border border-white/8 bg-[color:var(--color-card)]/70 p-5 transition-all overflow-hidden",
-        "hover:border-white/20 hover:bg-[color:var(--color-card2)]/80",
+        "group relative overflow-hidden rounded-[var(--radius-lg)] border border-[color:var(--color-line)] bg-[color:var(--color-card)] p-[22px] transition-all",
+        "hover:-translate-y-[3px] hover:border-[color:var(--color-faint)]",
         className
       )}
     >
-      <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none", accentClass[accent])} />
-      <div className="relative">
-        <div className="flex items-center justify-between mb-4">
-          <div className={cn("w-9 h-9 rounded-md inline-flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors", accentClass[accent].split(" ").pop())}>
-            <Icon className="w-4 h-4" strokeWidth={1.75} />
-          </div>
-          <ChevronRight className="w-4 h-4 text-[color:var(--color-faint)] group-hover:text-[color:var(--color-ink)] group-hover:translate-x-0.5 transition-all" />
-        </div>
-        <div className="font-semibold text-sm mb-1">{title}</div>
-        <div className="text-xs text-[color:var(--color-muted)] leading-relaxed">{description}</div>
-        {meta && <div className="mt-4 text-[10px] uppercase tracking-wider text-[color:var(--color-faint)]">{meta}</div>}
+      <ChevronRight className="absolute right-[22px] top-[22px] h-4 w-4 text-[color:var(--color-faint)]" />
+      <div className={cn("mb-[14px] flex h-[42px] w-[42px] items-center justify-center rounded-[11px] text-[20px]", iconBg[accent])}>
+        <Icon className="h-5 w-5" strokeWidth={1.75} />
       </div>
+      <h4 className="mb-[5px] text-base font-bold">{title}</h4>
+      <p className="text-[13px] leading-relaxed text-[color:var(--color-muted)]">{description}</p>
+      {meta && <div className="mt-4 font-mono text-[10px] uppercase tracking-wider text-[color:var(--color-faint)]">{meta}</div>}
     </Link>
   );
 }

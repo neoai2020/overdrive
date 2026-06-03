@@ -270,88 +270,6 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
 
 /* PAIN SECTION — "Forensic audit" card design */
 
-/* Editorial anchor banner: full-width case-study still */
-.pain-anchor{
-  margin-top:56px;
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
-  border:1px solid var(--line);
-  aspect-ratio:21/9;
-  background:#000;
-  isolation:isolate;
-}
-.pain-anchor img{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-  transform:scale(1.02);
-  transition:transform 8s ease;
-}
-.pain-anchor:hover img{transform:scale(1.06)}
-.pain-anchor::after{
-  content:"";
-  position:absolute;inset:0;z-index:1;
-  background:
-    linear-gradient(90deg,
-      rgba(6,6,10,0.85) 0%,
-      rgba(6,6,10,0.45) 35%,
-      rgba(6,6,10,0.05) 65%,
-      transparent 100%),
-    linear-gradient(180deg,
-      transparent 60%,
-      rgba(6,6,10,0.8) 100%);
-}
-.pain-anchor-overlay{
-  position:absolute;
-  left:0;bottom:0;top:0;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  padding:38px 44px 36px;
-  max-width:60%;
-}
-.pain-anchor-cap{
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:.24em;
-  text-transform:uppercase;
-  color:var(--hot);
-  margin-bottom:18px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-.pain-anchor-cap::before{
-  content:"";width:6px;height:6px;border-radius:50%;
-  background:var(--hot);box-shadow:0 0 12px rgba(255,45,107,0.7);
-  animation:pulse 1.8s infinite;
-}
-.pain-anchor-quote{
-  font-family:var(--display);
-  font-weight:400;
-  font-size:clamp(22px,2.4vw,34px);
-  line-height:1.1;
-  color:var(--ink);
-  letter-spacing:-.01em;
-  text-transform:none;
-}
-.pain-anchor-quote::before,
-.pain-anchor-quote::after{color:var(--hot);opacity:.8}
-.pain-anchor-quote::before{content:"\201C "}
-.pain-anchor-quote::after{content:" \201D"}
-.pain-anchor-attr{
-  font-family:var(--mono);
-  font-size:10.5px;
-  letter-spacing:.14em;
-  color:var(--muted);
-  margin-top:14px;
-  text-transform:uppercase;
-}
-.pain-anchor-attr span{color:var(--ink)}
-
 .pain-meta{
   margin-top:40px;
   display:flex;
@@ -530,93 +448,6 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
   letter-spacing:.01em;
   line-height:1.3;
 }
-
-/* TOTAL DAMAGE — running tally of monthly bleed */
-.pain-total{
-  margin-top:32px;
-  padding:36px 40px 34px;
-  background:
-    radial-gradient(120% 80% at 0% 0%,rgba(255,45,107,0.10) 0%,transparent 55%),
-    linear-gradient(135deg,rgba(14,14,20,0.96) 0%,rgba(8,8,12,1) 100%);
-  border:1px solid rgba(255,45,107,0.22);
-  border-radius:20px;
-  position:relative;
-  overflow:hidden;
-}
-.pain-total::before{
-  content:"";
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--hot) 50%,transparent);
-}
-.pain-total::after{
-  content:"";
-  position:absolute;inset:0;pointer-events:none;
-  background-image:repeating-linear-gradient(135deg,
-    rgba(255,255,255,0.015) 0 1px,transparent 1px 10px);
-}
-.pain-total > *{position:relative}
-.pain-total-label{
-  font-family:var(--mono);
-  font-size:10.5px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:var(--hot);
-  margin-bottom:18px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-.pain-total-label::before{
-  content:"";width:6px;height:6px;border-radius:50%;
-  background:var(--hot);box-shadow:0 0 12px rgba(255,45,107,0.7);
-}
-.pain-total-row{
-  display:flex;
-  align-items:baseline;
-  gap:28px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-.pain-total-num{
-  font-family:var(--display);
-  font-size:clamp(56px,8vw,118px);
-  line-height:.86;
-  color:var(--hot);
-  letter-spacing:-.02em;
-  font-variant-numeric:tabular-nums;
-  text-shadow:0 0 50px rgba(255,45,107,0.35);
-}
-.pain-total-sub{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  padding-bottom:8px;
-}
-.pain-total-per{
-  font-family:var(--mono);
-  font-size:13px;
-  color:var(--ink);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  font-weight:500;
-}
-.pain-total-year{
-  font-family:var(--mono);
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:.08em;
-}
-.pain-total-year span{color:var(--hot);font-weight:500}
-.pain-total-foot{
-  font-size:14.5px;
-  color:var(--muted);
-  line-height:1.62;
-  max-width:64ch;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-}
-.pain-total-foot b{color:var(--ink);font-weight:700}
-.pain-total-foot .acid{color:var(--acid);font-weight:600}
 
 /* VS */
 .vs{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:56px}
@@ -832,20 +663,6 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
   .pain-item h3{font-size:17px}
   .pain-ledger-num{font-size:19px}
   .pain-meta{font-size:9.5px;letter-spacing:.18em;margin-top:32px}
-  .pain-anchor{aspect-ratio:4/5;margin-top:42px;border-radius:16px}
-  .pain-anchor-overlay{max-width:100%;padding:26px 22px 24px;background:linear-gradient(180deg,transparent 30%,rgba(6,6,10,0.9) 75%)}
-  .pain-anchor::after{
-    background:
-      linear-gradient(180deg,rgba(6,6,10,0.7) 0%,rgba(6,6,10,0.25) 30%,rgba(6,6,10,0.55) 65%,rgba(6,6,10,0.92) 100%);
-  }
-  .pain-anchor-quote{font-size:20px;line-height:1.18}
-  .pain-anchor-cap{font-size:9.5px;margin-bottom:14px}
-  .pain-total{padding:28px 24px;margin-top:24px}
-  .pain-total-row{gap:18px;margin-bottom:16px}
-  .pain-total-num{font-size:64px}
-  .pain-total-sub{padding-bottom:4px}
-  .pain-total-per{font-size:12px}
-  .pain-total-foot{font-size:13.5px;padding-top:14px}
   .fcard{padding:26px 22px}
   .cell{padding:26px 22px}
   .lead{font-size:15px}
@@ -959,15 +776,6 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
     <div class="tag">The real cost of your current setup</div>
     <h2>You're losing the <span class="hot">auction</span><br>before the ad runs.</h2>
     <p class="lead">Every competitor testing more creatives than you is taking your placements, driving up your CPMs, and printing money while you wait on your editor.</p>
-  </div>
-
-  <div class="pain-anchor reveal">
-    <img src="/assets/pain-anchor.jpg" alt="A media buyer at 3am holding a torn paper of crossed-out CPM and CPA numbers in front of a Meta Ads dashboard showing red trending charts.">
-    <div class="pain-anchor-overlay">
-      <span class="pain-anchor-cap">Case File · Current State</span>
-      <div class="pain-anchor-quote">Crossing out CPMs on a torn napkin while your competitors flood the auction is not a tooling problem. It's an arithmetic problem.</div>
-      <div class="pain-anchor-attr">Filed against · <span>The way you're doing this today</span></div>
-    </div>
   </div>
 
   <div class="pain-meta reveal"><span>Exhibits <span class="x">01</span> — <span class="x">06</span> · Itemized</span></div>
@@ -1100,20 +908,6 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
       </div>
     </article>
 
-  </div>
-
-  <div class="pain-total reveal" id="painTotal">
-    <div class="pain-total-label">Aggregate monthly bleed · conservative estimate</div>
-    <div class="pain-total-row">
-      <div class="pain-total-num" data-bleed-monthly>$0</div>
-      <div class="pain-total-sub">
-        <span class="pain-total-per">/ month, per media buyer</span>
-        <span class="pain-total-year">≈ <span data-bleed-yearly>$0</span> / year out the door</span>
-      </div>
-    </div>
-    <div class="pain-total-foot">
-      <b>That's what doing this the old way costs you</b> before a single creative even hits a winning ROAS. Overdrive replaces the entire stack — creative director, editor, UGC talent, voiceover, the agency middleman — for a fraction of one line item above. <span class="acid">The math stops being a debate.</span>
-    </div>
   </div>
 </section>
 
@@ -1384,23 +1178,6 @@ const cardBurnIO = new IntersectionObserver(entries => {
   });
 }, {threshold: 0.45});
 document.querySelectorAll('.pain-item[data-bleed]').forEach(c => cardBurnIO.observe(c));
-
-// Total damage tally — sums every card's data-bleed dynamically
-const painTotalEl = document.getElementById('painTotal');
-if(painTotalEl){
-  const monthlyTotal = [...document.querySelectorAll('.pain-item[data-bleed]')]
-    .reduce((sum, c) => sum + (parseInt(c.dataset.bleed, 10) || 0), 0);
-  const yearlyTotal = monthlyTotal * 12;
-  const totalIO = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(!e.isIntersecting) return;
-      animateMoney(e.target.querySelector('[data-bleed-monthly]'), monthlyTotal, '', 2200);
-      animateMoney(e.target.querySelector('[data-bleed-yearly]'), yearlyTotal, '', 2400);
-      totalIO.unobserve(e.target);
-    });
-  }, {threshold: 0.35});
-  totalIO.observe(painTotalEl);
-}
 
 // Desktop tilt-on-mousemove for pain cards (Linear / Apple-style 3D follow)
 if(!isMobile && matchMedia('(hover: hover)').matches){

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, formatRelativeTime } from "@/lib/utils";
-import { Play, MoreHorizontal } from "lucide-react";
+import { Play } from "lucide-react";
 import { StatusPill } from "@/components/ui/status-pill";
 import type { Ad, AdVersion } from "@/lib/types/database";
 
@@ -10,64 +10,61 @@ interface AdCardProps {
   selected?: boolean;
   onSelect?: () => void;
   onClick?: () => void;
+  compact?: boolean;
 }
 
-export function AdCard({ ad, selected, onSelect, onClick }: AdCardProps) {
+export function AdCard({ ad, selected, onSelect, onClick, compact }: AdCardProps) {
   const v = ad.current_version;
   return (
     <div
       onClick={onClick}
       className={cn(
-        "group relative rounded-lg border bg-[color:var(--color-card)] overflow-hidden cursor-pointer transition-all",
-        selected
-          ? "border-[color:var(--color-acid)] ring-2 ring-[color:var(--color-acid)]/30"
-          : "border-white/8 hover:border-white/20"
+        "group relative cursor-pointer overflow-hidden rounded-[11px] border border-[color:var(--color-line)] bg-gradient-to-br from-[#16161e] to-[#0b0b0f] transition-all",
+        selected ? "border-[color:var(--color-acid)] z-[3]" : "hover:scale-[1.04] hover:border-[color:var(--color-acid)] hover:z-[3]"
       )}
     >
       {onSelect && (
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(); }}
           className={cn(
-            "absolute top-2 left-2 z-10 w-5 h-5 rounded border-2 transition-all",
-            selected
-              ? "bg-[color:var(--color-acid)] border-[color:var(--color-acid)]"
-              : "border-white/30 bg-black/40 opacity-0 group-hover:opacity-100"
+            "absolute left-[7px] top-[7px] z-10 hidden h-4 w-4 items-center justify-center rounded-[5px] bg-[color:var(--color-acid)] text-[10px] font-extrabold text-black",
+            selected && "flex"
           )}
-        />
+        >
+          ✓
+        </button>
       )}
-      <div className="aspect-[9/16] bg-black relative overflow-hidden">
+      <div className="relative aspect-[9/16] overflow-hidden">
         {v?.thumbnail_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={v.thumbnail_url} alt={v?.hook ?? ad.name ?? "ad"} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+          <img src={v.thumbnail_url} alt={v?.hook ?? ad.name ?? "ad"} className="h-full w-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[color:var(--color-card3)] to-black flex items-center justify-center">
-            <span className="text-xs text-[color:var(--color-faint)] uppercase tracking-wider">No preview</span>
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[color:var(--color-card3)] to-black">
+            <span className="text-[10px] uppercase tracking-wider text-[color:var(--color-faint)]">No preview</span>
           </div>
         )}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/95 to-transparent" />
-        <div className="absolute top-2 right-2"><StatusPill status={ad.status} /></div>
-        {v?.length_seconds && (
-          <div className="absolute bottom-2 left-2 text-[10px] font-mono text-white/80 bg-black/60 px-1.5 py-0.5 rounded">
-            {v.length_seconds}s
+        {!compact && (
+          <div className="absolute right-[7px] top-[7px]">
+            <StatusPill status={ad.status} />
           </div>
         )}
-        <button
-          onClick={(e) => e.stopPropagation()}
-          className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/20"
-        >
-          <Play className="w-5 h-5 ml-0.5 fill-white" />
-        </button>
-      </div>
-      <div className="p-3 space-y-1">
-        <div className="text-sm font-medium line-clamp-2 leading-snug">{v?.hook ?? ad.name ?? "Untitled ad"}</div>
-        <div className="flex items-center justify-between gap-2 text-xs text-[color:var(--color-muted)]">
-          <span className="truncate">{v?.style?.replace(/_/g, " ") ?? "—"}</span>
-          <span className="shrink-0">{formatRelativeTime(ad.created_at)}</span>
+        <div className="absolute inset-0 m-auto flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/16 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+          <Play className="ml-0.5 h-3.5 w-3.5 fill-white text-white" />
+        </div>
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2 pt-8">
+          <div className="line-clamp-2 text-[9px] font-bold leading-tight">{v?.hook ?? ad.name ?? "Untitled"}</div>
+          {!compact && (
+            <div className="mt-0.5 font-mono text-[7px] uppercase text-[color:var(--color-acid)]">
+              {v?.style?.replace(/_/g, " ") ?? "ugc"}
+            </div>
+          )}
         </div>
       </div>
-      <button onClick={(e) => e.stopPropagation()} className="absolute top-2 right-12 z-10 opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-white/10 transition-opacity">
-        <MoreHorizontal className="w-4 h-4" />
-      </button>
+      {!compact && (
+        <div className="hidden p-3 space-y-1 sm:block">
+          <div className="text-xs text-[color:var(--color-muted)]">{formatRelativeTime(ad.created_at)}</div>
+        </div>
+      )}
     </div>
   );
 }

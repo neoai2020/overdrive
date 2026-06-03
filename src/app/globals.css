@@ -66,6 +66,78 @@
 @layer utilities {
   .font-display { font-family: var(--font-display); }
   .font-mono    { font-family: var(--font-mono); }
+
+  /* ── Prototype-matched app shell (overdrive-app-v2.html) ── */
+  .btn-proto {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    white-space: nowrap;
+  }
+  .btn-proto-acid {
+    background: var(--color-acid);
+    color: #000;
+  }
+  .btn-proto-acid:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(204, 255, 0, 0.3);
+  }
+  .btn-proto-ghost {
+    background: var(--color-card);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line);
+  }
+  .btn-proto-ghost:hover {
+    border-color: var(--color-faint);
+  }
+  .btn-proto-sm {
+    padding: 7px 13px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .sec-head h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .sec-head .link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .sec-head .link:hover {
+    color: var(--color-acid);
+  }
+
+  .ctable {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .brand-mk {
+    width: 20px;
+    height: 20px;
+    background: var(--color-acid);
+    clip-path: polygon(0 0, 100% 50%, 0 100%, 30% 50%);
+    flex-shrink: 0;
+  }
 }
 
 @keyframes pulse-dot {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { PageShell } from "@/components/app-shell/page-shell";
 import { PageHeader } from "@/components/page-header";
 import { DocCallout } from "@/components/ui/doc-callout";
 import { Button } from "@/components/ui/button";
@@ -23,19 +24,18 @@ export default async function CampaignsPage() {
   } catch { /* schema not applied */ }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
+    <PageShell>
       <PageHeader
-        eyebrow="Campaigns"
-        title="Your Meta campaigns"
-        description="Each campaign holds one or more ad sets — every ad you generate lives inside an ad set."
-        actions={<CampaignBuilderTrigger><Button><Plus className="w-4 h-4" /> New campaign</Button></CampaignBuilderTrigger>}
+        title="My Campaigns"
+        description="Build a campaign, generate ads into its ad sets, push to Meta."
+        actions={<CampaignBuilderTrigger><Button className="btn-proto-sm"><Plus className="w-4 h-4" /> New campaign</Button></CampaignBuilderTrigger>}
       />
 
       <DocCallout title="Mental model">
-        <strong className="text-[color:var(--color-ink)]">Offer → Campaign → Ad Set → Ad.</strong> An offer is the product. A campaign holds its targeting strategy. Ad sets are the audiences. Ads are the creative — and a single ad can live in multiple ad sets at once.
+        <strong>Offer → Campaign → Ad Set → Ad.</strong> An offer is the product. A campaign holds its targeting strategy. Ad sets are the audiences. Ads are the creative — and a single ad can live in multiple ad sets at once.
       </DocCallout>
 
-      <div className="rounded-lg border border-white/8 bg-[color:var(--color-card)]/70 overflow-hidden">
+      <div className="ctable">
         {campaigns.length === 0 ? (
           <EmptyState
             icon={Megaphone}
@@ -46,7 +46,7 @@ export default async function CampaignsPage() {
         ) : (
           <>
             <CampaignRowHeader />
-            <ul className="divide-y divide-white/5">
+            <ul>
               {campaigns.map((c) => (
                 <li key={c.id}><CampaignRow campaign={c} /></li>
               ))}
@@ -54,6 +54,6 @@ export default async function CampaignsPage() {
           </>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

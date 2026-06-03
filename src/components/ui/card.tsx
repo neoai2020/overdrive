@@ -5,7 +5,7 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        "rounded-lg border border-white/8 bg-[color:var(--color-card)]/70 backdrop-blur",
+        "rounded-[var(--radius-lg)] border border-[color:var(--color-line)] bg-[color:var(--color-card)]",
         className
       )}
       {...props}
@@ -14,7 +14,7 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 }
 
 export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("px-5 py-4 border-b border-white/8", className)} {...props} />;
+  return <div className={cn("px-5 py-4 border-b border-[color:var(--color-line)]", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
@@ -30,5 +30,5 @@ export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDi
 }
 
 export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("px-5 py-4 border-t border-white/8 flex items-center justify-between", className)} {...props} />;
+  return <div className={cn("px-5 py-4 border-t border-[color:var(--color-line)] flex items-center justify-between", className)} {...props} />;
 }

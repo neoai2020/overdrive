@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { PageShell } from "@/components/app-shell/page-shell";
 import { PageHeader } from "@/components/page-header";
 import { DocCallout } from "@/components/ui/doc-callout";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -23,12 +24,11 @@ export default async function AdsPage() {
   } catch { /* */ }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
+    <PageShell>
       <PageHeader
-        eyebrow="Library"
-        title="All ads"
-        description="Every creative you've ever generated. Click to preview. Shift-click to bulk-select."
-        actions={<Button asChild><Link href="/app/batches?new=1"><Plus className="w-4 h-4" /> New batch</Link></Button>}
+        title="My Ads"
+        description="Every creative you've made — from campaigns and batches. Reuse any of them anywhere."
+        actions={<Button asChild><Link href="/app/batches?new=1"><Plus className="w-4 h-4" /> Generate ads</Link></Button>}
       />
 
       <DocCallout title="Keyboard shortcuts">
@@ -45,6 +45,6 @@ export default async function AdsPage() {
       ) : (
         <AdsGrid ads={ads} />
       )}
-    </div>
+    </PageShell>
   );
 }

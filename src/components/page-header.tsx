@@ -9,21 +9,22 @@ interface PageHeaderProps {
   className?: string;
 }
 
+/** Matches prototype `.ph` — body font headlines, not Anton display. */
 export function PageHeader({ eyebrow, title, description, actions, className }: PageHeaderProps) {
   return (
-    <header className={cn("flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8", className)}>
+    <header className={cn("mb-[22px] flex flex-col gap-5 md:flex-row md:items-end md:justify-between", className)}>
       <div className="min-w-0">
         {eyebrow && (
-          <div className="text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-acid)] font-semibold mb-2">
+          <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--color-acid)]">
             {eyebrow}
           </div>
         )}
-        <h1 className="font-display text-3xl md:text-4xl leading-none">{title}</h1>
+        <h1 className="text-[23px] font-extrabold tracking-[-0.01em]">{title}</h1>
         {description && (
-          <p className="text-sm text-[color:var(--color-muted)] mt-2 max-w-2xl">{description}</p>
+          <p className="mt-1 max-w-2xl text-[13.5px] text-[color:var(--color-muted)]">{description}</p>
         )}
       </div>
-      {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
     </header>
   );
 }

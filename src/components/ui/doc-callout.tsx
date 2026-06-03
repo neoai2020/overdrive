@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Info } from "lucide-react";
 
 interface DocCalloutProps {
   title: string;
@@ -7,20 +6,17 @@ interface DocCalloutProps {
   className?: string;
 }
 
+/** Matches prototype `.doc` — blue info tint. */
 export function DocCallout({ title, children, className }: DocCalloutProps) {
   return (
     <div className={cn(
-      "rounded-lg border-l-2 border-l-[color:var(--color-acid)] border border-white/8 bg-white/[0.02] px-5 py-4 flex gap-4",
+      "mb-5 flex gap-[9px] rounded-[10px] border border-[rgba(45,107,255,0.15)] bg-[rgba(45,107,255,0.05)] px-[14px] py-[11px] text-[12.5px] text-[#9db8ff]",
       className
     )}>
-      <div className="shrink-0 mt-0.5">
-        <div className="w-6 h-6 rounded-full bg-[color:var(--color-acid)]/15 inline-flex items-center justify-center">
-          <Info className="w-3.5 h-3.5 text-[color:var(--color-acid)]" />
-        </div>
-      </div>
-      <div className="text-sm">
-        <div className="font-semibold mb-1">{title}</div>
-        <div className="text-[color:var(--color-muted)] leading-relaxed">{children}</div>
+      <span className="shrink-0 opacity-80">ℹ️</span>
+      <div>
+        <b className="text-[#cdddff]">{title}</b>
+        <div className="mt-0.5 leading-relaxed [&_strong]:text-[#cdddff]">{children}</div>
       </div>
     </div>
   );

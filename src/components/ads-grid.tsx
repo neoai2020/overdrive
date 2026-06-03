@@ -151,7 +151,7 @@ export function AdsGrid({ ads }: AdsGridProps) {
     <div className="space-y-4 relative">
       <div
         ref={gridRef}
-        className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+        className="grid gap-[13px] grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
       >
         {ads.map((ad, idx) => (
           <div

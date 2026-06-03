@@ -16,10 +16,10 @@ export function ActiveRunsTray() {
       <DropdownMenu.Trigger asChild>
         <button
           className={cn(
-            "relative h-9 px-3 rounded-md border text-xs font-medium inline-flex items-center gap-2 transition-colors",
+            "relative inline-flex h-9 items-center gap-2 rounded-[10px] border px-3 text-xs font-semibold transition-colors",
             count > 0
-              ? "border-[color:var(--color-amber)]/40 bg-[color:var(--color-amber)]/10 text-[color:var(--color-amber)] hover:bg-[color:var(--color-amber)]/15"
-              : "border-white/10 bg-white/[0.03] text-[color:var(--color-muted)] hover:bg-white/[0.06]"
+              ? "border-[color:var(--color-amber)]/40 bg-[color:var(--color-amber)]/10 text-[color:var(--color-amber)]"
+              : "border-[color:var(--color-line)] bg-[color:var(--color-card)] text-[color:var(--color-muted)] hover:border-[color:var(--color-faint)]"
           )}
         >
           <Activity className="w-3.5 h-3.5" />

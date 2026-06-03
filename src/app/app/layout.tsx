@@ -7,16 +7,30 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  // Try to load profile (workspace context). Don't crash if schema isn't applied yet.
-  type ProfileLite = { full_name: string | null; avatar_url: string | null };
+  type ProfileLite = { full_name: string | null; avatar_url: string | null; workspace_id: string | null };
   let profile: ProfileLite | null = null;
+  let creditsTotal = 2000;
+  let creditsUsed = 0;
+
   try {
     const { data } = await supabase
       .from("profiles")
-      .select("full_name, avatar_url")
+      .select("full_name, avatar_url, workspace_id")
       .eq("id", user.id)
       .maybeSingle();
     profile = (data as ProfileLite | null) ?? null;
+
+    if (profile?.workspace_id) {
+      const { data: ws } = await supabase
+        .from("workspaces")
+        .select("credits_total, credits_used")
+        .eq("id", profile.workspace_id)
+        .maybeSingle();
+      if (ws) {
+        creditsTotal = ws.credits_total ?? 2000;
+        creditsUsed = ws.credits_used ?? 0;
+      }
+    }
   } catch {
     profile = null;
   }
@@ -28,6 +42,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         full_name: profile?.full_name ?? null,
         avatar_url: profile?.avatar_url ?? null,
       }}
+      creditsTotal={creditsTotal}
+      creditsUsed={creditsUsed}
     >
       {children}
     </ShellFrame>
