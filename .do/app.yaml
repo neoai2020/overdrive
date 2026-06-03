@@ -1,5 +1,12 @@
 name: overdrive
 region: nyc
+domains:
+  - domain: overdrive.ad
+    type: PRIMARY
+    zone: overdrive.ad
+  - domain: www.overdrive.ad
+    type: ALIAS
+    zone: overdrive.ad
 static_sites:
   - name: overdrive-site
     github:
