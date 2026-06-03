@@ -71,6 +71,7 @@ h1.mega .ln i{display:inline-block;font-style:normal;transform:translateY(110%);
   height:0.9em;
   overflow:hidden;
   line-height:1;
+  white-space:nowrap;
 }
 .rotor .sizer{
   display:inline-block;
@@ -253,20 +254,13 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
 
 /* Mobile: simpler, more readable */
 @media(max-width:768px){
-  .scene-bg.right-subject .scene-media,
-  .scene-bg.left-subject .scene-media{
-    object-position:center center;
-    filter:brightness(0.45) saturate(0.78) contrast(1.05);
-    animation:none !important;
-    transform:none !important;
-  }
-  .scene-bg.right-subject::after,
-  .scene-bg.left-subject::after{
-    background:linear-gradient(to bottom,
-      rgba(6,6,10,0.85),
-      rgba(6,6,10,0.72) 50%,
-      rgba(6,6,10,0.92));
-  }
+  /* Mobile scene backgrounds: hide entirely. The hyper-real portraits are
+     composed for desktop with subject-on-edge / text-on-other-side. On a
+     centered phone layout they sit directly behind text and look broken.
+     Cleaner to drop them and let the dark section background do the work. */
+  .scene-bg{display:none !important}
+  .scene-section{background:linear-gradient(180deg,#0a0a10 0%,var(--bg) 100%)}
+
   /* Hero orbs: smaller, spread apart, lower opacity so colors don't muddy together */
   .hero-bg .o1{width:260px;height:260px;top:-60px;left:-80px;opacity:.32;filter:blur(70px)}
   .hero-bg .o2{width:240px;height:240px;top:40px;right:-80px;opacity:.28;filter:blur(70px)}
@@ -468,13 +462,30 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
   section,nav{padding-left:18px;padding-right:18px}
   section{padding-top:80px;padding-bottom:80px}
   .cta-section{padding:90px 18px}
-  .hero{padding:120px 18px 60px}
+
+  /* HERO mobile: compress everything so the eyebrow, headline, sub, and
+     primary CTA all fit above the fold. Also: shrink the H1 enough that
+     "FOR YOUR [longest niche]" stays on a single line, otherwise the rotor
+     swap causes the line to wrap and the whole page jumps vertically. */
+  .hero{padding:88px 18px 28px;min-height:auto}
+  h1.mega{font-size:34px;line-height:.92;letter-spacing:.005em}
+  h1.mega .ln{padding:0.02em 0}
+  .eyebrow{font-size:10px;padding:6px 12px;margin-bottom:18px;letter-spacing:.12em}
+  .hero-sub{font-size:14.5px;margin:18px auto 22px;line-height:1.55;max-width:42ch}
+  .cta-row{gap:10px}
+  .cta-row .btn-lg{padding:13px 20px;font-size:13.5px;flex:1;min-width:0}
+  .btn-lg{padding:13px 20px;font-size:13.5px}
+  /* Trust + scrollhint sit below the fold on mobile — pushed down so they
+     don't compete with the CTA for space */
+  .trust{margin-top:24px}
+  .trust .txt{font-size:12px;text-align:center;max-width:32ch}
+  .scrollhint{margin-top:22px;font-size:9px}
+  .scrollhint .mouse{width:18px;height:28px}
+
   .vs-col{padding:32px 24px}
   .pain-item{padding:28px 22px}
   .fcard{padding:26px 22px}
   .cell{padding:26px 22px}
-  .hero-sub{font-size:15px;margin:22px auto 32px}
-  .btn-lg{padding:15px 26px;font-size:14px}
   .lead{font-size:15px}
   footer{flex-direction:column;text-align:center;padding:32px 18px}
   footer .fl{justify-content:center}
@@ -489,9 +500,14 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
   .vs-col .ch{font-size:28px;margin-bottom:22px}
   .pain-item h3,.cell .cell-title,.fcard .step-title{font-size:16px}
   .pain-item p,.cell .cell-body,.fcard .step-body{font-size:13.5px}
-  .trust .txt{font-size:12.5px;text-align:center}
-  .eyebrow{font-size:10.5px;padding:7px 13px}
   .tag{font-size:10.5px}
+}
+
+/* Very narrow phones (iPhone SE / older small Androids): drop another notch */
+@media(max-width:380px){
+  h1.mega{font-size:30px}
+  .hero{padding-top:80px}
+  .hero-sub{font-size:14px;margin:14px auto 18px}
 }
 </style>
 </head>
