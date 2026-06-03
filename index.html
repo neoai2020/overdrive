@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVERDRIVE — More Winners. More ROAS.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060a;--ink:#f2f2ef;--muted:#6b6b78;--line:rgba(255,255,255,0.08);
+  --acid:#ccff00;--hot:#ff2d6b;--blue:#3a6bff;--card:#0e0e14;
+  --display:'Anton',sans-serif;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.4}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::selection{background:var(--acid);color:#000}
+a{color:inherit;text-decoration:none}
+
+/* ---- BG ---- */
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero-bg .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;mix-blend-mode:screen}
+.hero-bg .o1{width:600px;height:600px;background:var(--blue);top:-180px;left:-100px}
+.hero-bg .o2{width:500px;height:500px;background:var(--hot);top:0;right:-140px}
+.hero-bg .o3{width:440px;height:440px;background:var(--acid);bottom:-220px;left:38%;opacity:.22}
+.hero-bg .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 70% at 50% 35%,#000,transparent);opacity:.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 40px;transition:.3s}
+nav.scrolled{padding:14px 40px;background:rgba(6,6,10,0.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--display);font-size:22px;letter-spacing:.04em;display:flex;align-items:center;gap:10px}
+.logo .mk{width:20px;height:20px;background:var(--acid);clip-path:polygon(0 0,100% 50%,0 100%,28% 50%);animation:spinmk 3s linear infinite}
+@keyframes spinmk{to{transform:rotate(360deg)}}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--muted);font-size:14px;font-weight:600;transition:.2s;letter-spacing:.01em}
+.nav-links a:hover{color:var(--ink)}
+.btn{font-family:var(--body);font-weight:800;font-size:14px;cursor:pointer;border:none;padding:12px 24px;border-radius:7px;transition:transform .15s,box-shadow .25s;letter-spacing:.01em}
+.btn-acid{background:var(--acid);color:#000}
+.btn-acid:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(204,255,0,0.4)}
+.btn-out{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,0.15)}
+.btn-out:hover{border-color:var(--acid);color:var(--acid)}
+.btn-lg{padding:17px 34px;font-size:15px}
+
+/* HERO */
+.hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px 24px 80px;overflow:hidden}
+.hero-inner{max-width:1100px;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acid);border:1px solid rgba(204,255,0,0.2);padding:8px 16px;border-radius:100px;background:rgba(204,255,0,0.05);margin-bottom:36px;opacity:0;animation:fadeUp .8s .1s forwards}
+.eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--acid);box-shadow:0 0 10px var(--acid);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.6);opacity:.4}}
+
+h1.mega{font-family:var(--display);font-weight:400;line-height:.88;letter-spacing:.01em;font-size:clamp(48px,9.5vw,140px);text-transform:uppercase;margin-bottom:10px}
+h1.mega .ln{display:block;overflow:hidden;padding:0.04em 0}
+h1.mega .ln i{display:inline-block;font-style:normal;transform:translateY(110%);opacity:0;animation:up 1s forwards cubic-bezier(.16,1,.3,1)}
+.mega .ln:nth-child(1) i{animation-delay:.1s}
+.mega .ln:nth-child(2) i{animation-delay:.22s}
+.mega .ln:nth-child(3) i{animation-delay:.34s}
+.mega .ln:nth-child(4) i{animation-delay:.46s}
+@keyframes up{to{transform:translateY(0);opacity:1}}
+.mega .acid{color:var(--acid)}
+.mega .hot{color:var(--hot)}
+
+/* rotor — properly centered slot machine */
+.rotor{
+  display:inline-block;
+  position:relative;
+  color:var(--hot);
+  vertical-align:baseline;
+  height:0.9em;
+  overflow:hidden;
+  line-height:1;
+}
+.rotor .sizer{
+  display:inline-block;
+  visibility:hidden;
+  pointer-events:none;
+  font-family:var(--display);
+  line-height:1;
+}
+.rotor .word{
+  position:absolute;
+  left:50%;
+  top:0;
+  white-space:nowrap;
+  font-family:var(--display);
+  color:var(--hot);
+  line-height:1;
+  transform:translate(-50%, 105%);
+  transition:transform .55s cubic-bezier(.16,1,.3,1);
+}
+.rotor .word.in{
+  transform:translate(-50%, 0);
+}
+.rotor .word.out{
+  transform:translate(-50%, -115%);
+  transition-timing-function:cubic-bezier(.65,0,.35,1);
+}
+
+.hero-sub{font-size:clamp(15px,1.6vw,19px);color:var(--muted);max-width:58ch;line-height:1.7;margin:28px auto 40px;opacity:0;animation:fadeUp .8s .9s forwards}
+.hero-sub b{color:var(--ink);font-weight:700}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s 1.05s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+.trust{margin-top:44px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s 1.2s forwards}
+.trust .av{display:flex}
+.trust .av i{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;flex:0 0 auto}
+.trust .av i:nth-child(1){background:linear-gradient(135deg,#3a6bff,#ff2d6b)}
+.trust .av i:nth-child(2){background:linear-gradient(135deg,#ff2d6b,#ccff00)}
+.trust .av i:nth-child(3){background:linear-gradient(135deg,#ccff00,#3a6bff)}
+.trust .av i:nth-child(4){background:linear-gradient(135deg,#7c5cff,#ff2d6b)}
+.trust .txt{font-size:13px;color:var(--muted)}.trust .txt b{color:var(--ink)}
+
+.scrollhint{margin-top:50px;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:0;animation:fadeUp .8s 1.4s forwards}
+.scrollhint .mouse{width:20px;height:32px;border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;position:relative}
+.scrollhint .mouse::after{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:6px;background:var(--acid);border-radius:2px;animation:scrolldot 1.6s infinite}
+@keyframes scrolldot{0%{opacity:0;top:6px}40%{opacity:1}80%{opacity:0;top:16px}100%{opacity:0}}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;position:relative;z-index:2;background:var(--acid)}
+.tk{display:flex;white-space:nowrap;animation:scroll 20s linear infinite}
+.tk span{font-family:var(--display);font-size:28px;text-transform:uppercase;color:#000;padding:14px 24px;display:inline-flex;align-items:center;gap:22px;letter-spacing:.02em}
+.tk span::after{content:"✦";font-size:15px}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{position:relative;z-index:2;padding:130px 40px;max-width:1300px;margin:0 auto}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acid);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.tag::before{content:"";width:28px;height:1px;background:var(--acid)}
+h2{font-family:var(--display);font-weight:400;line-height:.9;font-size:clamp(38px,6vw,100px);text-transform:uppercase;margin-bottom:22px}
+h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
+.lead{font-size:clamp(15px,1.5vw,18px);color:var(--muted);max-width:56ch;line-height:1.65}
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* Cinematic scene section — full-section coverage with cinematic motion */
+.scene-section{position:relative;overflow:hidden;isolation:isolate}
+.scene-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  opacity:0;
+  transition:opacity 1.5s ease;
+  pointer-events:none;
+}
+.scene-bg.loaded{opacity:1}
+
+.scene-media{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:brightness(0.7) saturate(0.92) contrast(1.06);
+  will-change:transform;
+  z-index:0;
+}
+.scene-bg.right-subject .scene-media{object-position:75% center;animation:kenBurnsR 32s ease-in-out infinite}
+.scene-bg.left-subject  .scene-media{object-position:25% center;animation:kenBurnsL 32s ease-in-out infinite}
+/* When video is playing, pause Ken Burns (video provides its own motion) */
+.scene-bg .scene-video{animation:none !important;transform:none !important}
+.scene-section:nth-of-type(2) .scene-media{animation-duration:36s;animation-delay:-4s}
+.scene-section:nth-of-type(3) .scene-media{animation-duration:30s;animation-delay:-8s}
+.scene-section:nth-of-type(4) .scene-media{animation-duration:34s;animation-delay:-12s}
+
+@keyframes kenBurnsR{
+  0%,100%{transform:scale(1.04) translate(0,0)}
+  50%{transform:scale(1.08) translate(-1.2%,-0.8%)}
+}
+@keyframes kenBurnsL{
+  0%,100%{transform:scale(1.04) translate(0,0)}
+  50%{transform:scale(1.08) translate(1.2%,-0.8%)}
+}
+
+/* Vertical fade + subject-edge feather — kills hard cutoffs on all sides */
+.scene-bg::before{
+  content:"";
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,
+    var(--bg) 0%,
+    rgba(6,6,10,0.4) 6%,
+    transparent 16%,
+    transparent 84%,
+    rgba(6,6,10,0.4) 94%,
+    var(--bg) 100%);
+}
+/* Right-subject: feather the right edge so the cutoff dissolves */
+.scene-bg.right-subject::before{
+  background:
+    linear-gradient(to left,
+      var(--bg) 0%,
+      rgba(6,6,10,0.7) 3%,
+      rgba(6,6,10,0.25) 9%,
+      transparent 22%),
+    linear-gradient(to bottom,
+      var(--bg) 0%,
+      rgba(6,6,10,0.4) 6%,
+      transparent 16%,
+      transparent 84%,
+      rgba(6,6,10,0.4) 94%,
+      var(--bg) 100%);
+}
+/* Left-subject: feather the left edge */
+.scene-bg.left-subject::before{
+  background:
+    linear-gradient(to right,
+      var(--bg) 0%,
+      rgba(6,6,10,0.7) 3%,
+      rgba(6,6,10,0.25) 9%,
+      transparent 22%),
+    linear-gradient(to bottom,
+      var(--bg) 0%,
+      rgba(6,6,10,0.4) 6%,
+      transparent 16%,
+      transparent 84%,
+      rgba(6,6,10,0.4) 94%,
+      var(--bg) 100%);
+}
+
+/* Content-side gradient — solid black where text lives, smooth feather */
+.scene-bg::after{
+  content:"";
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+}
+.scene-bg.right-subject::after{
+  background:linear-gradient(to right,
+    var(--bg) 0%,
+    rgba(6,6,10,0.97) 28%,
+    rgba(6,6,10,0.55) 48%,
+    rgba(6,6,10,0.15) 65%,
+    transparent 85%);
+}
+.scene-bg.left-subject::after{
+  background:linear-gradient(to left,
+    var(--bg) 0%,
+    rgba(6,6,10,0.97) 28%,
+    rgba(6,6,10,0.55) 48%,
+    rgba(6,6,10,0.15) 65%,
+    transparent 85%);
+}
+
+.scene-section > *:not(.scene-bg){position:relative;z-index:3}
+
+/* Subtle film grain overlay across all scene sections */
+.scene-bg .grain{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  opacity:0.18;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Mobile: simpler, more readable */
+@media(max-width:768px){
+  .scene-bg.right-subject .scene-media,
+  .scene-bg.left-subject .scene-media{
+    object-position:center center;
+    filter:brightness(0.42) saturate(0.7) contrast(1.05);
+    animation-duration:48s;
+  }
+  .scene-bg.right-subject::after,
+  .scene-bg.left-subject::after{
+    background:linear-gradient(to bottom,
+      rgba(6,6,10,0.85),
+      rgba(6,6,10,0.72) 50%,
+      rgba(6,6,10,0.92));
+  }
+}
+
+/* PAIN SECTION */
+.pain-grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pain-item{background:var(--card);padding:36px 30px;position:relative}
+.pain-item::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--hot),transparent);opacity:0;transition:.3s}
+.pain-item:hover::before{opacity:1}
+.pain-item .emo{font-size:28px;margin-bottom:20px}
+.pain-item h3{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.25;letter-spacing:-.01em}
+.pain-item p{font-size:14px;color:var(--muted);line-height:1.6}
+.pain-item .cost{font-family:var(--mono);font-size:11px;color:var(--hot);margin-top:14px;letter-spacing:.06em}
+
+/* VS */
+.vs{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:56px}
+.vs-col{border-radius:18px;padding:44px 38px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:0}
+.vs-old{background:rgba(255,45,107,0.05);border:1px solid rgba(255,45,107,0.16)}
+.vs-new{background:rgba(204,255,0,0.05);border:1px solid rgba(204,255,0,0.2)}
+.vs-col .cap{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.vs-old .cap{color:var(--hot)}.vs-new .cap{color:var(--acid)}
+.vs-col .ch{font-family:var(--display);font-size:32px;text-transform:uppercase;margin-bottom:28px;line-height:1}
+.vs-row{display:flex;gap:14px;padding:17px 0;border-top:1px solid var(--line);align-items:flex-start}
+.vs-row:first-of-type{border-top:none}
+.vs-row .ico{width:28px;height:28px;border-radius:7px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;margin-top:1px}
+.vs-old .ico{background:rgba(255,45,107,0.1);color:var(--hot)}
+.vs-new .ico{background:rgba(204,255,0,0.12);color:var(--acid)}
+.vs-row .tx b{display:block;font-size:15px;font-weight:800;margin-bottom:3px;letter-spacing:-.01em}
+.vs-row .tx span{font-size:13px;color:var(--muted);line-height:1.55}
+.vs-old .vs-row .tx b{color:#ffc4d0}.vs-new .vs-row .tx b{color:#ddffa0}
+.vs-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:64px;height:64px;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;box-shadow:0 0 0 10px var(--bg)}
+.vs-badge .vss{background:linear-gradient(135deg,var(--hot),var(--acid));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.vs-foot{margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding-top:20px;border-top:1px solid var(--line)}
+.vs-old .vs-foot{color:var(--hot)}.vs-new .vs-foot{color:var(--acid)}
+
+/* HOW IT WORKS */
+.flow{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fcard{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:32px 28px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s, transform .3s;
+  display:flex;flex-direction:column;gap:0
+}
+.fcard:hover{transform:translateY(-6px);border-color:rgba(204,255,0,0.3)}
+.fcard::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acid),transparent);opacity:0;transition:.3s}
+.fcard:hover::after{opacity:1}
+.fcard .step-num{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--acid);
+  margin-bottom:20px;
+  opacity:.7
+}
+.fcard .step-ico{
+  font-size:28px;
+  margin-bottom:18px;
+  line-height:1
+}
+.fcard .step-title{
+  font-size:18px;
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:10px;
+  line-height:1.2;
+  letter-spacing:-.02em
+}
+.fcard .step-body{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+  flex:1
+}
+.fcard .step-tag{
+  margin-top:20px;
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:5px 10px;
+  border-radius:5px;
+  background:rgba(204,255,0,0.08);
+  color:var(--acid);
+  border:1px solid rgba(204,255,0,0.15)
+}
+
+/* SHOWCASE */
+.showcase{padding:130px 0;overflow:hidden;position:relative;z-index:2}
+.showcase .hd{max-width:1300px;margin:0 auto 52px;padding:0 40px}
+.strip{display:flex;gap:16px;width:max-content;padding:0 16px}
+.strip.a{animation:scroll2 36s linear infinite}
+.strip.b{animation:scroll2 36s linear infinite reverse;margin-top:16px}
+@keyframes scroll2{to{transform:translateX(-50%)}}
+.sc{width:200px;aspect-ratio:9/16;border-radius:14px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden;flex:0 0 auto;transition:.25s}
+.sc:hover{transform:scale(1.05);border-color:var(--acid);z-index:5}
+.sc .g{position:absolute;inset:0}
+.sc .pl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.2)}
+.sc .pl::after{content:"";border-left:13px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px}
+.sc .m{position:absolute;bottom:0;left:0;right:0;padding:16px 12px;background:linear-gradient(0,rgba(0,0,0,.9),transparent)}
+.sc .m .h{font-size:12px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.sc .m .s{font-family:var(--mono);font-size:8.5px;color:var(--acid);text-transform:uppercase;letter-spacing:.08em}
+.sc .b{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:7.5px;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid var(--line);padding:3px 6px;border-radius:4px;color:var(--muted)}
+
+/* FEATURES BENTO */
+.bento{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:auto;gap:14px}
+.cell{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:32px 30px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s,transform .25s;
+  display:flex;flex-direction:column
+}
+.cell:hover{border-color:rgba(204,255,0,0.28);transform:translateY(-4px)}
+.cell.w2{grid-column:span 2}
+.cell .cell-ico{font-size:26px;margin-bottom:18px;line-height:1}
+.cell .cell-title{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.02em;line-height:1.2}
+.cell .cell-body{font-size:14px;color:var(--muted);line-height:1.6}
+.cell .big-stat{font-family:var(--display);font-size:clamp(48px,5vw,80px);line-height:.9;color:var(--acid);margin-top:16px}
+.cell .big-label{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.cell::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(204,255,0,0.3),transparent);opacity:0;transition:.3s}
+.cell:hover::after{opacity:1}
+/* accent variant */
+.cell.accent{background:linear-gradient(160deg,rgba(204,255,0,0.08),rgba(204,255,0,0.01));border-color:rgba(204,255,0,0.18)}
+.cell.accent:hover{border-color:rgba(204,255,0,0.4)}
+
+/* DEMO */
+.demo{position:relative;z-index:2;max-width:1300px;margin:0 auto 60px;padding:0 40px}
+.demo-frame{background:linear-gradient(180deg,rgba(18,18,26,.95),rgba(8,8,12,.95));border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,0.65);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.demo-bar .dotrow{display:flex;gap:6px}
+.demo-bar .dotrow i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.demo-bar .title{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-left:8px}
+.demo-bar .status{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--acid);display:flex;align-items:center;gap:7px}
+.demo-bar .status .d{width:6px;height:6px;border-radius:50%;background:var(--acid);animation:pulse 1.2s infinite}
+.demo-body{display:grid;grid-template-columns:280px 1fr;gap:22px}
+.demo-input .field{background:#09090d;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.demo-input .field .cur{display:inline-block;width:2px;height:14px;background:var(--acid);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.pl-step{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:13px;color:var(--muted);opacity:.35;transition:.35s}
+.pl-step.active{opacity:1;color:var(--ink)}.pl-step.done{opacity:.65;color:var(--ink)}
+.pl-step .ck{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;flex:0 0 auto;transition:.3s}
+.pl-step.active .ck{border-color:var(--acid);color:var(--acid);animation:spin .8s linear infinite;border-top-color:transparent}
+.pl-step.done .ck{background:var(--acid);border-color:var(--acid);color:#000}
+@keyframes spin{to{transform:rotate(360deg)}}
+.demo-output{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-content:start}
+.oc{aspect-ratio:9/16;border-radius:9px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden;opacity:0;transform:scale(.82) translateY(14px)}
+.oc.pop{animation:pop .5s forwards cubic-bezier(.16,1.3,.3,1)}
+@keyframes pop{to{opacity:1;transform:scale(1) translateY(0)}}
+.oc .g{position:absolute;inset:0}
+.oc .pl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
+.oc .pl::after{content:"";border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.oc .t{position:absolute;top:6px;left:6px;font-family:var(--mono);font-size:6.5px;background:var(--acid);color:#000;padding:2px 5px;border-radius:3px;font-weight:700}
+.oc .c{position:absolute;bottom:6px;left:5px;right:5px;font-size:7px;font-weight:700;text-align:center;text-shadow:0 1px 4px #000;line-height:1.3}
+
+/* CTA */
+.cta-section{text-align:center;padding:160px 40px;position:relative;z-index:2;max-width:1300px;margin:0 auto}
+.cta-section h2{font-size:clamp(44px,8vw,130px);margin-bottom:28px}
+.cta-section .lead{margin:0 auto 38px}
+.cta-section .cta-row{justify-content:center}
+
+/* FOOTER */
+footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:40px;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+footer .fl{display:flex;gap:24px;flex-wrap:wrap}
+footer .fl a{color:var(--muted);font-size:13px;transition:.2s}
+footer .fl a:hover{color:var(--ink)}
+footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* responsive */
+@media(max-width:980px){
+  .nav-links{display:none}
+  .demo-body,.vs{grid-template-columns:1fr}.vs-badge{display:none}
+  .flow{grid-template-columns:1fr 1fr}
+  .bento{grid-template-columns:1fr 1fr;grid-auto-flow:dense}.cell.w2{grid-column:span 2}
+  .pain-grid{grid-template-columns:1fr 1fr}
+  nav{padding:18px 24px}
+  nav.scrolled{padding:12px 24px}
+  section{padding:100px 28px}
+  .cta-section{padding:120px 28px}
+  .demo{padding:0 28px}
+  .showcase .hd{padding:0 28px}
+}
+@media(max-width:640px){
+  body{overflow-x:hidden}
+  .flow,.pain-grid,.bento{grid-template-columns:1fr}
+  .cell.w2{grid-column:span 1}
+  .demo-output{grid-template-columns:repeat(2,1fr)}
+  section,nav{padding-left:18px;padding-right:18px}
+  section{padding-top:80px;padding-bottom:80px}
+  .cta-section{padding:90px 18px}
+  .hero{padding:120px 18px 60px}
+  .vs-col{padding:32px 24px}
+  .pain-item{padding:28px 22px}
+  .fcard{padding:26px 22px}
+  .cell{padding:26px 22px}
+  .hero-sub{font-size:15px;margin:22px auto 32px}
+  .btn-lg{padding:15px 26px;font-size:14px}
+  .lead{font-size:15px}
+  footer{flex-direction:column;text-align:center;padding:32px 18px}
+  footer .fl{justify-content:center}
+  .tk span{font-size:22px;padding:11px 16px;gap:16px}
+  .demo-frame{padding:18px}
+  .demo-bar .title{display:none}
+  .demo-input{margin-bottom:8px}
+  .pl-step{font-size:12px}
+  .vs-row{padding:14px 0}
+  .vs-row .tx b{font-size:14px}
+  .vs-row .tx span{font-size:13px}
+  .vs-col .ch{font-size:28px;margin-bottom:22px}
+  .pain-item h3,.cell .cell-title,.fcard .step-title{font-size:16px}
+  .pain-item p,.cell .cell-body,.fcard .step-body{font-size:13.5px}
+  .trust .txt{font-size:12.5px;text-align:center}
+  .eyebrow{font-size:10.5px;padding:7px 13px}
+  .tag{font-size:10.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo"><span class="mk"></span>OVERDRIVE</div>
+  <div class="nav-links">
+    <a href="#pain">The Problem</a>
+    <a href="#how">How it Works</a>
+    <a href="#proof">Output</a>
+    <a href="#power">Features</a>
+    <button class="btn btn-acid">Get Access →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="grid"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="d"></span>The creative engine for Direct Response media buyers</div>
+
+    <h1 class="mega">
+      <span class="ln"><i>More <span class="acid">winners.</span></i></span>
+      <span class="ln"><i>More <span class="hot">ROAS.</span></i></span>
+      <span class="ln"><i>For your <span class="rotor" id="rotor"><span class="sizer">Weight Loss</span></span></i></span>
+      <span class="ln"><i>campaigns.</i></span>
+    </h1>
+
+    <p class="hero-sub">
+      Drop an offer link. Get <b>50+ hyper-realistic UGC, b-roll, and testimonial ads</b> — hooks, scripts, AI talent, voiceover, captions, edit — built in bulk and <b>pushed straight into your Meta campaigns.</b> No creative director. No agency retainer. No bottleneck.
+    </p>
+
+    <div class="cta-row">
+      <button class="btn btn-acid btn-lg">Start printing winners →</button>
+      <button class="btn btn-out btn-lg">Watch it build ↓</button>
+    </div>
+
+    <div class="trust">
+      <div class="av"><i></i><i></i><i></i><i></i></div>
+      <div class="txt">Trusted by <b>Direct Response affiliates</b> running aggressive paid campaigns on Meta.</div>
+    </div>
+
+    <div class="scrollhint"><span>See it live</span><div class="mouse"></div></div>
+  </div>
+</header>
+
+<!-- LIVE DEMO -->
+<div class="demo">
+  <div class="demo-frame">
+    <div class="demo-bar">
+      <div class="dotrow"><i></i><i></i><i></i></div>
+      <span class="title">overdrive.studio / new-batch</span>
+      <span class="status"><span class="d"></span><span id="statusTxt">reading offer…</span></span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-input">
+        <div class="field"><span>🔗</span><span id="urlTxt"></span><span class="cur"></span></div>
+        <div id="pipeline">
+          <div class="pl-step"><span class="ck"></span>Reading the offer page</div>
+          <div class="pl-step"><span class="ck"></span>Extracting buyer angles</div>
+          <div class="pl-step"><span class="ck"></span>Writing Direct Response hooks</div>
+          <div class="pl-step"><span class="ck"></span>Scripting + voiceover</div>
+          <div class="pl-step"><span class="ck"></span>Generating AI talent &amp; b-roll</div>
+          <div class="pl-step"><span class="ck"></span>Editing + burned-in captions</div>
+          <div class="pl-step"><span class="ck"></span>Pushing batch to Meta Ads</div>
+        </div>
+      </div>
+      <div class="demo-output" id="output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker"><div class="tk" id="tk"></div></div>
+
+<!-- PAIN POINTS -->
+<!-- PAIN POINTS -->
+<section id="pain" class="scene-section">
+  <div class="scene-bg right-subject" id="bg1"></div>
+  <div class="reveal">
+    <div class="tag">The real cost of your current setup</div>
+    <h2>You're losing the <span class="hot">auction</span><br>before the ad runs.</h2>
+    <p class="lead">Every competitor testing more creatives than you is taking your placements, driving up your CPMs, and printing money while you wait on your editor.</p>
+  </div>
+  <div class="pain-grid reveal">
+    <div class="pain-item">
+      <div class="emo">🎬</div>
+      <h3>A creative director who doesn't think in conversions</h3>
+      <p>You hired someone who makes beautiful videos. You needed someone who obsesses over the first 3 seconds and tests 40 hooks before breakfast.</p>
+      <div class="cost">$6,000–$12,000/month — for the wrong brain</div>
+    </div>
+    <div class="pain-item">
+      <div class="emo">⏳</div>
+      <h3>3–5 days per ad is a competitive death sentence</h3>
+      <p>Your competitors are running 50-creative batches this week. You're approving brief revisions via Slack. By the time your ad launches, the angle is dead.</p>
+      <div class="cost">~$300–500 per creative. 1–2 ads a week. That's your ceiling.</div>
+    </div>
+    <div class="pain-item">
+      <div class="emo">🧠</div>
+      <h3>Managing a team is a second job you didn't sign up for</h3>
+      <p>Scriptwriter, editor, UGC talent, voiceover artist, media buyer — five different people who don't talk to each other and bill you whether creatives convert or not.</p>
+      <div class="cost">Coordination tax: hours per week you could spend scaling</div>
+    </div>
+    <div class="pain-item">
+      <div class="emo">📉</div>
+      <h3>Ad fatigue kills accounts that can't refresh fast enough</h3>
+      <p>Meta's algorithm rewards freshness. If you're not rotating in new creatives every week, your CPAs climb, your winners die, and the algorithm moves on.</p>
+      <div class="cost">Stale creatives = rising CPMs = shrinking margins</div>
+    </div>
+    <div class="pain-item">
+      <div class="emo">🏚️</div>
+      <h3>Agencies take 20% of spend to do what a tool can do in minutes</h3>
+      <p>You're paying a middleman to brief a freelancer to write a script that gets handed to an editor who's never read a Direct Response headline in their life.</p>
+      <div class="cost">$2,000–$8,000/month retainer. 14-day turnaround. Luck required.</div>
+    </div>
+    <div class="pain-item">
+      <div class="emo">🚫</div>
+      <h3>Generic AI tools make ads that look like AI made them</h3>
+      <p>ChatGPT hooks, Canva templates, plastic-looking avatars — audiences clock it instantly. The scroll doesn't stop. The click doesn't happen. The offer doesn't convert.</p>
+      <div class="cost">Burning ad spend on creative that can't pass the scroll test</div>
+    </div>
+  </div>
+</section>
+
+<!-- VS -->
+<section id="vs" style="position:relative;overflow:hidden">
+  <div class="char-bg left" id="char2"><canvas id="c2"></canvas></div>
+  <div class="reveal">
+    <div class="tag">Before vs. after Overdrive</div>
+    <h2>Same offer. Same budget.<br><span class="acid">Different outcome.</span></h2>
+  </div>
+  <div class="vs reveal">
+    <div class="vs-badge"><span class="vss">VS</span></div>
+    <div class="vs-col vs-old">
+      <div class="cap">Without Overdrive</div>
+      <div class="ch">The grind</div>
+      <div class="vs-row"><div class="ico">✕</div><div class="tx"><b>1–2 ads per week, maybe</b><span>Bottlenecked by people who move at human speed.</span></div></div>
+      <div class="vs-row"><div class="ico">✕</div><div class="tx"><b>$300–500 per creative</b><span>Burned before a single impression, on an angle that might be wrong.</span></div></div>
+      <div class="vs-row"><div class="ico">✕</div><div class="tx"><b>Creative directors, editors, UGC talent, VAs</b><span>5 people. 5 invoices. 1 bottleneck at any given moment.</span></div></div>
+      <div class="vs-row"><div class="ico">✕</div><div class="tx"><b>Upload one ad at a time into Meta</b><span>Manually. Every time. While your campaigns are bleeding.</span></div></div>
+      <div class="vs-row"><div class="ico">✕</div><div class="tx"><b>Generic looking creatives</b><span>AI slop that audiences recognize and scroll past in 0.3 seconds.</span></div></div>
+      <div class="vs-foot">Result: you're outgunned, out-tested, and outspent.</div>
+    </div>
+    <div class="vs-col vs-new">
+      <div class="cap">With Overdrive</div>
+      <div class="ch">The machine</div>
+      <div class="vs-row"><div class="ico">✦</div><div class="tx"><b>50+ ads before lunch</b><span>Full batches — every angle, hook, format and style — generated at once.</span></div></div>
+      <div class="vs-row"><div class="ico">✦</div><div class="tx"><b>Pennies per creative</b><span>Test like you're backed by a 7-figure war chest.</span></div></div>
+      <div class="vs-row"><div class="ico">✦</div><div class="tx"><b>Zero team required</b><span>Overdrive replaces your creative director, editor, UGC talent, and voiceover artist.</span></div></div>
+      <div class="vs-row"><div class="ico">✦</div><div class="tx"><b>One-click push to Meta</b><span>The whole batch lands in your campaigns as launch-ready drafts. Review and go live.</span></div></div>
+      <div class="vs-row"><div class="ico">✦</div><div class="tx"><b>Hyper-real UGC &amp; b-roll</b><span>AI talent that passes the scroll test. Direct Response hooks that stop the thumb.</span></div></div>
+      <div class="vs-foot">Result: you flood the auction with winners and let data decide.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" class="scene-section">
+  <div class="scene-bg left-subject" id="bg4"></div>
+  <div class="reveal">
+    <div class="tag">From link to live in minutes</div>
+    <h2>Four steps.<br>A full <span class="acid">creative department.</span></h2>
+    <p class="lead">No briefs. No feedback loops. No Slack threads. You paste a link — Overdrive handles everything and pushes it to Meta.</p>
+  </div>
+  <div class="flow">
+    <div class="fcard reveal">
+      <div class="step-num">Step 01</div>
+      <div class="step-ico">🔗</div>
+      <div class="step-title">Drop your offer link</div>
+      <div class="step-body">Paste any sales page or affiliate URL. Overdrive reads it cold — the product, the promise, the proof, the objections — in seconds. No brief needed.</div>
+      <span class="step-tag">Works on any offer</span>
+    </div>
+    <div class="fcard reveal">
+      <div class="step-num">Step 02</div>
+      <div class="step-ico">🎯</div>
+      <div class="step-title">Lock your angle &amp; batch size</div>
+      <div class="step-body">We surface the highest-leverage Direct Response angles for your offer. Pick one, write your own, or let the machine decide. Set how many creatives you want.</div>
+      <span class="step-tag">Pick from proven DR angles</span>
+    </div>
+    <div class="fcard reveal">
+      <div class="step-num">Step 03</div>
+      <div class="step-ico">⚡</div>
+      <div class="step-title">It builds the whole batch</div>
+      <div class="step-body">Hooks, full scripts, hyper-realistic UGC talent, b-roll, voiceover, captions, edit — done. Every creative is built from scratch, Direct Response–first, at scale.</div>
+      <span class="step-tag">UGC · B-roll · Testimonials</span>
+    </div>
+    <div class="fcard reveal">
+      <div class="step-num">Step 04</div>
+      <div class="step-ico">🚀</div>
+      <div class="step-title">Push the batch to Meta</div>
+      <div class="step-body">Connect your ad account once. Review your creatives, then fire the entire batch into your campaigns as launch-ready drafts. Never leave the tab.</div>
+      <span class="step-tag">Meta Ads Manager sync</span>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase" id="proof">
+  <div class="hd reveal">
+    <div class="tag">Creative output</div>
+    <h2>Looks <span class="hot">filmed.</span><br>Built to <span class="acid">convert.</span></h2>
+    <p class="lead">Every clip below came from a single offer link. Hyper-real talent, native UGC pacing, and Direct Response hooks engineered to stop the thumb.</p>
+  </div>
+  <div class="strip a" id="stripA"></div>
+  <div class="strip b" id="stripB"></div>
+</section>
+
+<!-- FEATURES -->
+<!-- FEATURES -->
+<section id="power" class="scene-section">
+  <div class="scene-bg right-subject" id="bg3"></div>
+  <div class="reveal">
+    <div class="tag">Why nothing else comes close</div>
+    <h2>Everything an agency does.<br><span class="acid">In one tab.</span></h2>
+    <p class="lead">Other tools hand you a clip and wish you luck. Overdrive runs the entire creative department — research, angles, hooks, talent, voice, edit, and a direct line into Meta.</p>
+  </div>
+  <div class="bento">
+    <div class="cell accent reveal">
+      <div class="cell-ico">♾️</div>
+      <div class="cell-title">Bulk creative by default — not as an add-on</div>
+      <div class="cell-body">Don't make an ad. Make a hundred. Spin a full test matrix of angles × hooks × ad formats from one offer. Whoever tests more, faster, wins. That's you now.</div>
+      <div class="big-stat">50+</div>
+      <div class="big-label">ads generated per batch</div>
+    </div>
+    <div class="cell reveal">
+      <div class="cell-ico">🎬</div>
+      <div class="cell-title">Hyper-realistic UGC, b-roll &amp; testimonials</div>
+      <div class="cell-body">AI-generated talent that actually passes the scroll test. Not plastic avatars — real-looking faces, real environments, native vertical video energy that blends into the feed.</div>
+    </div>
+    <div class="cell reveal">
+      <div class="cell-ico">🪝</div>
+      <div class="cell-title">Hooks built on Direct Response principles</div>
+      <div class="cell-body">Pattern interrupts, curiosity gaps, proof-led openers, pain agitation. Every hook is written to win the first 3 seconds — because that's where campaigns are won or lost.</div>
+    </div>
+    <div class="cell w2 reveal">
+      <div class="cell-ico">📲</div>
+      <div class="cell-title">One-click push to Meta — no uploading, no tab-juggling</div>
+      <div class="cell-body">Connect your Meta ad account once. Overdrive pushes your full batch into Ads Manager as ready-to-launch drafts. Review, toggle on, go live. The most boring part of your day just disappeared.</div>
+    </div>
+    <div class="cell reveal">
+      <div class="cell-ico">🎙️</div>
+      <div class="cell-title">Voiceover &amp; burned-in captions — finished</div>
+      <div class="cell-body">Native-sounding voiceover and captions are built into every ad. No timeline. No editor. No revision round. It's just done.</div>
+    </div>
+    <div class="cell w2 reveal">
+      <div class="cell-ico">🔄</div>
+      <div class="cell-title">Creative refresh on tap — kill ad fatigue permanently</div>
+      <div class="cell-body">Meta rewards freshness. Overdrive means you can refresh your entire creative rotation every week for a fraction of what a single freelancer costs. Your CPAs stop climbing. Your winners stop dying. You stay in the auction.</div>
+    </div>
+    <div class="cell reveal">
+      <div class="cell-ico">🔒</div>
+      <div class="cell-title">Your edge stays invisible</div>
+      <div class="cell-body">No prompts to reverse-engineer. No obvious AI fingerprint. Your competitors see winning ads and have no idea how fast you made them.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="reveal">
+    <div class="tag" style="justify-content:center">Stop being outgunned</div>
+    <h2>Stop losing the<br>auction to people<br>with <span class="acid">better tools.</span></h2>
+    <p class="lead" style="margin:0 auto 38px">One media buyer with Overdrive out-tests an entire agency team. Join the affiliates already flooding the auction with winners.</p>
+    <div class="cta-row">
+      <button class="btn btn-acid btn-lg">Get access — start printing winners →</button>
+      <button class="btn btn-out btn-lg">Book a demo</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="mk"></span>OVERDRIVE</div>
+  <div class="fl">
+    <a href="#pain">The Problem</a>
+    <a href="#how">How it Works</a>
+    <a href="#proof">Output</a>
+    <a href="#power">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">Login</a>
+  </div>
+  <div class="cp">© 2026 Overdrive Studio</div>
+</footer>
+
+<script>
+// ── Cinematic scene backgrounds — unified Cyber-Luxury Sovereign theme ──
+// Each section gets a hyper-real editorial portrait + (when ready) looping video
+const scenes = [
+  {
+    img:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115354_ce96213c-cd53-43b2-8f54-91ce9bb8bdfd.jpeg',
+    video:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115703_8f6c0242-07ba-49d8-b697-dc62f3d0ecd8.mp4',
+    bgId:'bg1'
+  },
+  {
+    img:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115404_a62c582f-d8d2-4e6d-b79c-76e8c0f2fd30.jpeg',
+    bgId:'bg2'
+  },
+  {
+    img:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115413_efb1a38b-6180-4f05-9517-a9e290c97d23.png',
+    video:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115634_fe861008-b9fd-4dcc-b16e-0469c114bf37.mp4',
+    bgId:'bg4'
+  },
+  {
+    img:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115422_9021abc4-9ff0-4d52-a8a9-8857e24177f5.jpeg',
+    video:'https://d8j0ntlcm91z4.cloudfront.net/user_3Cnuwjt7qLoE4j5c5U6olQoBsXb/hf_20260603_115643_0f3e1ac4-7705-4a32-9d32-3a4fa91d0e2f.mp4',
+    bgId:'bg3'
+  },
+];
+// Load: video preferred when available + on desktop, image always as base layer
+const isMobile = matchMedia('(max-width: 768px)').matches;
+scenes.forEach(({img, video, bgId})=>{
+  const bg = document.getElementById(bgId);
+  if(!bg) return;
+
+  // Base layer: image (always loads)
+  const imgEl = new Image();
+  imgEl.alt = '';
+  imgEl.className = 'scene-media scene-img';
+  imgEl.onload = () => {
+    bg.insertBefore(imgEl, bg.firstChild);
+    requestAnimationFrame(()=>bg.classList.add('loaded'));
+  };
+  imgEl.onerror = () => {};
+  imgEl.src = img;
+
+  // Add grain overlay
+  const grain = document.createElement('div');
+  grain.className = 'grain';
+  bg.appendChild(grain);
+
+  // Enhanced layer: video on desktop, when available
+  if(video && !isMobile){
+    const videoEl = document.createElement('video');
+    videoEl.className = 'scene-media scene-video';
+    videoEl.autoplay = true;
+    videoEl.muted = true;
+    videoEl.loop = true;
+    videoEl.playsInline = true;
+    videoEl.setAttribute('playsinline', '');
+    videoEl.preload = 'metadata';
+    videoEl.style.opacity = '0';
+    videoEl.style.transition = 'opacity 2s ease';
+    videoEl.addEventListener('loadeddata', ()=>{
+      videoEl.style.opacity = '1';
+    });
+    videoEl.src = video;
+    bg.insertBefore(videoEl, grain);
+  }
+});
+
+// nav scroll
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>30));
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// rotor — properly centered, no inline-style override bug
+const niches=['Forex','Weight Loss','Biz Opp','Crypto','Supplement','Skincare','MMO','Trading'];
+const rotorEl=document.getElementById('rotor');
+const sizer=rotorEl.querySelector('.sizer');
+const longest=niches.reduce((a,b)=>b.length>a.length?b:a,'');
+sizer.textContent=longest;
+
+function mkWord(txt){
+  const s=document.createElement('span');
+  s.className='word';
+  s.textContent=txt;
+  return s;
+}
+
+// Seed: append with .in but suppress transition so it appears instantly
+const firstW=mkWord(niches[0]);
+firstW.classList.add('in');
+firstW.style.transition='none';
+rotorEl.appendChild(firstW);
+requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  firstW.style.transition='';
+}));
+
+let ri=1;
+function cycleRotor(){
+  const cur=rotorEl.querySelector('.word.in');
+  const next=mkWord(niches[ri]);
+  rotorEl.appendChild(next);
+  next.offsetHeight;
+  next.classList.add('in');
+  if(cur){
+    cur.classList.remove('in');
+    cur.classList.add('out');
+    setTimeout(()=>cur.remove(),650);
+  }
+  ri=(ri+1)%niches.length;
+}
+setInterval(cycleRotor,2600);
+
+// ticker
+const words=['50 ads before lunch','Zero editors needed','Push to Meta instantly','Direct Response hooks','Hyper-realistic UGC','Kill ad fatigue','Print more winners','Scale ROAS now'];
+document.getElementById('tk').innerHTML=(words.map(w=>`<span>${w}</span>`).join('')).repeat(2);
+
+// showcase strips
+const grads=[['#3a6bff','#ccff00'],['#ff2d6b','#3a6bff'],['#ccff00','#0b0b0f'],['#ff9d2d','#ff2d6b'],['#2dffb0','#0b0b0f'],['#ff2d6b','#ccff00'],['#7c5cff','#2dffb0'],['#3a6bff','#ff2d6b']];
+const cards=[
+  ['"I quit my 9–5 doing this daily"','Make Money Online'],
+  ['"Burns 3x more fat than the gym"','Weight Loss'],
+  ['"My broker was hiding this signal"','Forex Trading'],
+  ['"Cleared my skin in 14 days flat"','Skincare'],
+  ['"Stop scrolling — this is real"','Biz Opp'],
+  ['"Nobody told me this about Bitcoin"','Crypto'],
+  ['"I was skeptical. Then it worked."','Peptides'],
+  ['"Delete your trading app. Do this."','Trading'],
+];
+const cardHtml=(c,i)=>{const[a,b]=grads[i%grads.length];return`<div class="sc"><div class="g" style="background:linear-gradient(155deg,${a}38,transparent 55%,${b}22)"></div><span class="b">UGC · 0:${20+i*3}s</span><div class="pl"></div><div class="m"><div class="h">${c[0]}</div><div class="s">${c[1]}</div></div></div>`};
+document.getElementById('stripA').innerHTML=(cards.map(cardHtml).join('')).repeat(2);
+document.getElementById('stripB').innerHTML=(cards.slice().reverse().map(cardHtml).join('')).repeat(2);
+
+// pipeline demo
+const demoUrl='my-offer.com/vsl-funnel';
+const urlEl=document.getElementById('urlTxt');
+const steps=[...document.querySelectorAll('.pl-step')];
+const out=document.getElementById('output');
+const statusTxt=document.getElementById('statusTxt');
+const ocGrads=['linear-gradient(160deg,#3a6bff44,transparent 55%,#ccff0022)','linear-gradient(160deg,#ff2d6b44,transparent 55%,#3a6bff22)','linear-gradient(160deg,#ccff0044,transparent 50%,#06060a)','linear-gradient(160deg,#7c5cff44,transparent 55%,#2dffb022)'];
+const ocLabels=['"Hook 01 — Pain open"','"Hook 02 — Curiosity gap"','"Hook 03 — Social proof"','"Hook 04 — Agitation"'];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const labels=['reading offer…','finding angles…','writing hooks…','scripting…','generating talent…','editing…','pushing to Meta…'];
+
+async function typeUrl(){urlEl.textContent='';for(const ch of demoUrl){urlEl.textContent+=ch;await sleep(42)}}
+async function runDemo(){
+  steps.forEach(s=>s.classList.remove('active','done'));out.innerHTML='';statusTxt.textContent='ready';
+  await typeUrl();await sleep(350);
+  for(let i=0;i<steps.length;i++){
+    steps[i].classList.add('active');statusTxt.textContent=labels[i];await sleep(700);
+    if(i>=4&&out.children.length<4){
+      const d=document.createElement('div');d.className='oc';
+      d.innerHTML=`<div class="g" style="background:${ocGrads[out.children.length]}"></div><span class="t">AD 0${out.children.length+1}</span><div class="pl"></div><div class="c">${ocLabels[out.children.length]}</div>`;
+      out.appendChild(d);requestAnimationFrame(()=>d.classList.add('pop'));await sleep(200);
+    }
+    steps[i].classList.remove('active');steps[i].classList.add('done');
+  }
+  statusTxt.textContent='✓ 4 ads live in Meta';
+  await sleep(2800);await runDemo();
+}
+runDemo();
+</script>
+</body>
+</html>
