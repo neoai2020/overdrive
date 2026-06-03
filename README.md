@@ -143,33 +143,49 @@ After applying migrations, run `npx tsx scripts/seed.ts your@email.com` (after s
 
 ---
 
-## Deployment
+## Deployment — DigitalOcean App Platform
 
-### Vercel (recommended — Next.js native)
+The app is deployed via `.do/app.yaml` as a **Web Service** (Node) — not a Static Site anymore. DO rebuilds and redeploys automatically on every push to `main` (`deploy_on_push: true`).
 
-```bash
-npm i -g vercel
-vercel link
-vercel env add NEXT_PUBLIC_SUPABASE_URL
-vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY
-vercel env add SUPABASE_SERVICE_ROLE_KEY
-vercel env add NEXT_PUBLIC_SITE_URL
-vercel deploy --prod
+```yaml
+services:
+  - name: overdrive-web
+    build_command: npm ci && npm run build
+    run_command: npm start -- --port $PORT --hostname 0.0.0.0
+    http_port: 8080
+    instance_size_slug: basic-xs
+    health_check: { http_path: / }
 ```
 
-Then in Vercel project settings:
-- **Domains** → add `overdrive.ad` (and `www.overdrive.ad`)
-- Switch DNS at Namecheap to Vercel's name servers (or point ALIAS/CNAME records per Vercel's instructions)
+### First deploy on the new shape
 
-### Migrating from DigitalOcean
+The previous DO app was a Static Site — that component type can't run Next.js. You need to either:
 
-The current static site lives on DigitalOcean App Platform at `overdrive-bbcaw.ondigitalocean.app`. Once Vercel is live and `overdrive.ad` resolves there, delete the DO App to stop the bill.
+**A. Reapply the app spec** (preserves the app + domain):
+```bash
+doctl apps update <app-id> --spec .do/app.yaml
+```
+DO will see `services:` instead of `static_sites:` and recreate the component as a Web Service.
 
-The marketing site **content** is preserved 1:1 — `public/_landing/index.html` is the same file currently deployed.
+**B. Or rebuild from the dashboard:** Apps → overdrive → Settings → App Spec → Edit → paste `.do/app.yaml`.
+
+### Required secret — set in the DO dashboard
+
+The app spec only contains **public** env vars (Supabase URL + anon key, both safe to ship in the browser bundle, plus `NEXT_PUBLIC_SITE_URL`). One secret has to be set manually:
+
+| Key | Where | Why |
+|---|---|---|
+| `SUPABASE_SERVICE_ROLE_KEY` | DO dashboard → Apps → overdrive → Settings → App-Level Env → Edit, scope `RUN_AND_BUILD_TIME`, type `SECRET` | Server-only. Bypasses RLS. Never ships to the browser. |
+
+Get it from Supabase dashboard → Settings → API → `service_role` secret.
+
+### Instance size
+
+`basic-xs` ($12/mo · 1 vCPU · 1 GB RAM) is the floor for a Next.js app — the `npm run build` step needs the memory. `basic-xxs` (512 MB) will OOM during build.
 
 ### Note on `.ad` TLD + ad blockers
 
-`.ad` is a TLD often blocked by ad blockers (uBlock, Brave Shields, DNS-level filters). For organic / direct traffic this is fine. **For paid traffic, use a different domain** (`.com`, `.io`) — buy one, point it at the same Vercel deploy, and use it as the destination URL in your Meta ads.
+`.ad` is a TLD often blocked by ad blockers (uBlock, Brave Shields, DNS-level filters). For organic / direct traffic this is fine. **For paid traffic, use a different domain** (`.com`, `.io`) — buy one, add it under Apps → overdrive → Settings → Domains, and use it as the destination URL in your Meta ads.
 
 ---
 
