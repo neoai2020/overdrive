@@ -256,8 +256,9 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
   .scene-bg.right-subject .scene-media,
   .scene-bg.left-subject .scene-media{
     object-position:center center;
-    filter:brightness(0.42) saturate(0.7) contrast(1.05);
-    animation-duration:48s;
+    filter:brightness(0.45) saturate(0.78) contrast(1.05);
+    animation:none !important;
+    transform:none !important;
   }
   .scene-bg.right-subject::after,
   .scene-bg.left-subject::after{
@@ -266,6 +267,11 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
       rgba(6,6,10,0.72) 50%,
       rgba(6,6,10,0.92));
   }
+  /* Hero orbs: smaller, spread apart, lower opacity so colors don't muddy together */
+  .hero-bg .o1{width:260px;height:260px;top:-60px;left:-80px;opacity:.32;filter:blur(70px)}
+  .hero-bg .o2{width:240px;height:240px;top:40px;right:-80px;opacity:.28;filter:blur(70px)}
+  .hero-bg .o3{width:220px;height:220px;bottom:-120px;left:50%;transform:translateX(-50%);opacity:.14;filter:blur(70px)}
+  .hero-bg .grid{background-size:42px 42px;opacity:.35}
 }
 
 /* PAIN SECTION */
@@ -822,8 +828,8 @@ scenes.forEach(({img, video, bgId})=>{
   grain.className = 'grain';
   bg.appendChild(grain);
 
-  // Enhanced layer: video on desktop, when available
-  if(video && !isMobile){
+  // Enhanced layer: video plays on every device when available
+  if(video){
     const videoEl = document.createElement('video');
     videoEl.className = 'scene-media scene-video';
     videoEl.autoplay = true;
@@ -831,11 +837,15 @@ scenes.forEach(({img, video, bgId})=>{
     videoEl.loop = true;
     videoEl.playsInline = true;
     videoEl.setAttribute('playsinline', '');
-    videoEl.preload = 'metadata';
+    videoEl.setAttribute('muted', '');
+    videoEl.setAttribute('autoplay', '');
+    videoEl.preload = isMobile ? 'none' : 'metadata';
     videoEl.style.opacity = '0';
     videoEl.style.transition = 'opacity 2s ease';
     videoEl.addEventListener('loadeddata', ()=>{
       videoEl.style.opacity = '1';
+      const p = videoEl.play();
+      if(p && typeof p.catch === 'function'){ p.catch(()=>{}); }
     });
     videoEl.src = video;
     bg.insertBefore(videoEl, grain);
