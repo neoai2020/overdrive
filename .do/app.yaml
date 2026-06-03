@@ -1,0 +1,12 @@
+name: overdrive
+region: nyc
+static_sites:
+  - name: overdrive-site
+    github:
+      repo: neoai2020/overdrive
+      branch: main
+      deploy_on_push: true
+    source_dir: /
+    index_document: index.html
+    catchall_document: index.html
+    error_document: index.html
