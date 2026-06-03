@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-bg:        #08080c;
+  --color-panel:     #0e0e14;
+  --color-card:      #13131b;
+  --color-card2:     #171720;
+  --color-card3:     #1c1c26;
+
+  /* Text */
+  --color-ink:       #f4f4f2;
+  --color-muted:     #83838f;
+  --color-faint:     #5a5a66;
+
+  /* Lines */
+  --color-line:      rgba(255, 255, 255, 0.08);
+  --color-line2:     rgba(255, 255, 255, 0.05);
+
+  /* Accents */
+  --color-acid:      #ccff00;
+  --color-hot:       #ff2d6b;
+  --color-blue:      #2d6bff;
+  --color-green:     #2dffb0;
+  --color-amber:     #ffb02d;
+  --color-violet:    #7c5cff;
+
+  /* Status (semantic aliases) */
+  --color-status-live:  #2dffb0;
+  --color-status-draft: #83838f;
+  --color-status-gen:   #ffb02d;
+  --color-status-paused:#ff2d6b;
+  --color-status-review:#8fb4ff;
+
+  /* Fonts */
+  --font-display: 'Anton', sans-serif;
+  --font-sans:    'Archivo', sans-serif;
+  --font-mono:    'Geist Mono', monospace;
+
+  /* Radius scale */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--color-acid); color: #000; }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-mono    { font-family: var(--font-mono); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+.animate-pulse-dot { animation: pulse-dot 1.2s infinite; }
+
+@keyframes spin-acid {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-acid { animation: spin-acid 1s linear infinite; }
