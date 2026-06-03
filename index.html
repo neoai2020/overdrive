@@ -268,15 +268,163 @@ h2 .acid{color:var(--acid)}h2 .hot{color:var(--hot)}
   .hero-bg .grid{background-size:42px 42px;opacity:.35}
 }
 
-/* PAIN SECTION */
-.pain-grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.pain-item{background:var(--card);padding:36px 30px;position:relative}
-.pain-item::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--hot),transparent);opacity:0;transition:.3s}
+/* PAIN SECTION — "Forensic audit" card design */
+.pain-meta{
+  margin-top:40px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.pain-meta::before,.pain-meta::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);
+}
+.pain-meta .x{color:var(--hot)}
+
+.pain-grid{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.pain-item{
+  background:
+    linear-gradient(165deg,rgba(22,22,30,0.92) 0%,rgba(10,10,14,0.96) 60%,rgba(8,8,12,1) 100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:30px 28px 26px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:320px;
+  transition:border-color .35s ease, transform .35s ease, box-shadow .35s ease;
+  isolation:isolate;
+}
+/* faint diagonal pin-stripe so the cards feel like blueprint/ledger paper */
+.pain-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background-image:
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,0.012) 0 1px,
+      transparent 1px 8px);
+  pointer-events:none;
+}
+.pain-item > *{position:relative;z-index:1}
+.pain-item::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--hot) 0%,rgba(255,45,107,0.4) 30%,transparent 70%);
+  opacity:0;
+  transition:opacity .35s ease;
+  z-index:2;
+}
+.pain-item:hover{
+  border-color:rgba(255,45,107,0.32);
+  transform:translateY(-4px);
+  box-shadow:0 28px 60px -24px rgba(255,45,107,0.22);
+}
 .pain-item:hover::before{opacity:1}
-.pain-item .emo{font-size:28px;margin-bottom:20px}
-.pain-item h3{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.25;letter-spacing:-.01em}
-.pain-item p{font-size:14px;color:var(--muted);line-height:1.6}
-.pain-item .cost{font-family:var(--mono);font-size:11px;color:var(--hot);margin-top:14px;letter-spacing:.06em}
+
+.pain-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:22px;
+}
+.pain-num{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:54px;
+  line-height:.82;
+  color:var(--hot);
+  letter-spacing:-.01em;
+}
+.pain-num-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.22em;
+  color:var(--muted);
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:6px;
+  font-weight:500;
+}
+.pain-icon{
+  width:40px;height:40px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(255,45,107,0.08);
+  border:1px solid rgba(255,45,107,0.2);
+  color:var(--hot);
+  transition:background .35s ease,border-color .35s ease,color .35s ease;
+}
+.pain-item:hover .pain-icon{
+  background:rgba(255,45,107,0.14);
+  border-color:rgba(255,45,107,0.45);
+}
+.pain-icon svg{
+  width:20px;height:20px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.pain-item h3{
+  font-size:19px;
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:12px;
+  line-height:1.22;
+  letter-spacing:-.018em;
+}
+.pain-item p{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.62;
+  flex:1;
+}
+.pain-ledger{
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px dashed rgba(255,45,107,0.22);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.pain-ledger-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.22em;
+  color:var(--muted);
+  text-transform:uppercase;
+  flex:0 0 auto;
+}
+.pain-ledger-val{
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.02em;
+  color:var(--hot);
+  font-weight:500;
+  margin-left:auto;
+  text-align:right;
+  line-height:1.4;
+}
 
 /* VS */
 .vs{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:56px}
@@ -483,7 +631,13 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
   .scrollhint .mouse{width:18px;height:28px}
 
   .vs-col{padding:32px 24px}
-  .pain-item{padding:28px 22px}
+  .pain-item{padding:26px 22px 22px;min-height:auto}
+  .pain-num{font-size:44px}
+  .pain-head{margin-bottom:18px}
+  .pain-icon{width:34px;height:34px}
+  .pain-icon svg{width:17px;height:17px}
+  .pain-item h3{font-size:17px}
+  .pain-meta{font-size:9.5px;letter-spacing:.18em;margin-top:32px}
   .fcard{padding:26px 22px}
   .cell{padding:26px 22px}
   .lead{font-size:15px}
@@ -498,7 +652,7 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
   .vs-row .tx b{font-size:14px}
   .vs-row .tx span{font-size:13px}
   .vs-col .ch{font-size:28px;margin-bottom:22px}
-  .pain-item h3,.cell .cell-title,.fcard .step-title{font-size:16px}
+  .cell .cell-title,.fcard .step-title{font-size:16px}
   .pain-item p,.cell .cell-body,.fcard .step-body{font-size:13.5px}
   .tag{font-size:10.5px}
 }
@@ -591,7 +745,6 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
 <div class="ticker"><div class="tk" id="tk"></div></div>
 
 <!-- PAIN POINTS -->
-<!-- PAIN POINTS -->
 <section id="pain" class="scene-section">
   <div class="scene-bg right-subject" id="bg1"></div>
   <div class="reveal">
@@ -599,43 +752,119 @@ footer .cp{font-family:var(--mono);font-size:11px;color:var(--muted)}
     <h2>You're losing the <span class="hot">auction</span><br>before the ad runs.</h2>
     <p class="lead">Every competitor testing more creatives than you is taking your placements, driving up your CPMs, and printing money while you wait on your editor.</p>
   </div>
+
+  <div class="pain-meta reveal"><span>Exhibits <span class="x">01</span> — <span class="x">06</span></span></div>
+
   <div class="pain-grid reveal">
-    <div class="pain-item">
-      <div class="emo">🎬</div>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 01</span>
+          <div class="pain-num">01</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 10h18v10H3z"/><path d="M3 6h18l-2 4H3z"/><path d="M8 6l-2 4"/><path d="M13 6l-2 4"/><path d="M18 6l-2 4"/></svg>
+        </div>
+      </div>
       <h3>A creative director who doesn't think in conversions</h3>
       <p>You hired someone who makes beautiful videos. You needed someone who obsesses over the first 3 seconds and tests 40 hooks before breakfast.</p>
-      <div class="cost">$6,000–$12,000/month — for the wrong brain</div>
-    </div>
-    <div class="pain-item">
-      <div class="emo">⏳</div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">True Cost</span>
+        <span class="pain-ledger-val">$6K–$12K/mo<br><span style="color:var(--muted);font-size:10px">for the wrong brain</span></span>
+      </div>
+    </article>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 02</span>
+          <div class="pain-num">02</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 8v5l3.5 2"/><path d="M9 3h6"/><path d="M19 4l1.5 1.5"/></svg>
+        </div>
+      </div>
       <h3>3–5 days per ad is a competitive death sentence</h3>
       <p>Your competitors are running 50-creative batches this week. You're approving brief revisions via Slack. By the time your ad launches, the angle is dead.</p>
-      <div class="cost">~$300–500 per creative. 1–2 ads a week. That's your ceiling.</div>
-    </div>
-    <div class="pain-item">
-      <div class="emo">🧠</div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">Throughput</span>
+        <span class="pain-ledger-val">~$300–500/ad<br><span style="color:var(--muted);font-size:10px">1–2 ads/wk ceiling</span></span>
+      </div>
+    </article>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 03</span>
+          <div class="pain-num">03</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M8.4 6h7.2"/><path d="M7.2 8.1l3.6 7.8"/><path d="M16.8 8.1l-3.6 7.8"/></svg>
+        </div>
+      </div>
       <h3>Managing a team is a second job you didn't sign up for</h3>
       <p>Scriptwriter, editor, UGC talent, voiceover artist, media buyer — five different people who don't talk to each other and bill you whether creatives convert or not.</p>
-      <div class="cost">Coordination tax: hours per week you could spend scaling</div>
-    </div>
-    <div class="pain-item">
-      <div class="emo">📉</div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">Hidden Tax</span>
+        <span class="pain-ledger-val">5 invoices/mo<br><span style="color:var(--muted);font-size:10px">+ coordination hours</span></span>
+      </div>
+    </article>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 04</span>
+          <div class="pain-num">04</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 16V9"/><path d="M11 16v-5"/><path d="M16 16v-3"/><path d="M21 16v-1"/><path d="M3 5l5 4l5-3l5 2l3-2"/></svg>
+        </div>
+      </div>
       <h3>Ad fatigue kills accounts that can't refresh fast enough</h3>
       <p>Meta's algorithm rewards freshness. If you're not rotating in new creatives every week, your CPAs climb, your winners die, and the algorithm moves on.</p>
-      <div class="cost">Stale creatives = rising CPMs = shrinking margins</div>
-    </div>
-    <div class="pain-item">
-      <div class="emo">🏚️</div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">Compound Loss</span>
+        <span class="pain-ledger-val">Rising CPMs<br><span style="color:var(--muted);font-size:10px">shrinking margins</span></span>
+      </div>
+    </article>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 05</span>
+          <div class="pain-num">05</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v4h4"/><circle cx="10" cy="14" r="1.3"/><circle cx="14.5" cy="18" r="1.3"/><path d="M9 19l6.5-6.5"/></svg>
+        </div>
+      </div>
       <h3>Agencies take 20% of spend to do what a tool can do in minutes</h3>
       <p>You're paying a middleman to brief a freelancer to write a script that gets handed to an editor who's never read a Direct Response headline in their life.</p>
-      <div class="cost">$2,000–$8,000/month retainer. 14-day turnaround. Luck required.</div>
-    </div>
-    <div class="pain-item">
-      <div class="emo">🚫</div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">Retainer</span>
+        <span class="pain-ledger-val">$2K–$8K/mo<br><span style="color:var(--muted);font-size:10px">14-day turnaround</span></span>
+      </div>
+    </article>
+
+    <article class="pain-item">
+      <div class="pain-head">
+        <div>
+          <span class="pain-num-label">Exhibit 06</span>
+          <div class="pain-num">06</div>
+        </div>
+        <div class="pain-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="13" rx="3"/><circle cx="9.5" cy="13" r="1.4"/><circle cx="14.5" cy="13" r="1.4"/><path d="M9 17h6"/><path d="M12 7V4"/><circle cx="12" cy="3.2" r="1.2"/><path d="M3 12h2"/><path d="M19 12h2"/></svg>
+        </div>
+      </div>
       <h3>Generic AI tools make ads that look like AI made them</h3>
       <p>ChatGPT hooks, Canva templates, plastic-looking avatars — audiences clock it instantly. The scroll doesn't stop. The click doesn't happen. The offer doesn't convert.</p>
-      <div class="cost">Burning ad spend on creative that can't pass the scroll test</div>
-    </div>
+      <div class="pain-ledger">
+        <span class="pain-ledger-label">Scroll Test</span>
+        <span class="pain-ledger-val">0.3s to bounce<br><span style="color:var(--muted);font-size:10px">spend wasted</span></span>
+      </div>
+    </article>
+
   </div>
 </section>
 
