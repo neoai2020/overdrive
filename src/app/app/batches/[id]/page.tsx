@@ -17,14 +17,14 @@ import type { Ad, AdVersion, Batch } from "@/lib/types/database";
 
 const STEP_LABELS: Record<string, string> = {
   queued: "Queued",
-  starting: "Starting",
-  reading_offer: "Reading the offer",
-  generating_hooks: "Generating hooks",
-  writing_scripts: "Writing scripts",
-  selecting_talent: "Selecting talent",
-  rendering_videos: "Rendering videos",
+  reading: "Understanding the offer",
+  hooks: "Generating hooks",
+  awaiting_hooks_approval: "Waiting for hook approval",
+  scripting: "Writing scripts",
+  voicing: "Recording voiceovers",
+  shooting: "Rendering shots",
+  assembling: "Assembling final video",
   done: "Done",
-  complete: "Complete",
 };
 
 export default function BatchDetail() {
@@ -66,6 +66,21 @@ export default function BatchDetail() {
 
   const batch = batchQ.data;
   const isRunning = batch.status === "queued" || batch.status === "generating";
+  const pendingHooks = (batch.metadata as { pending_review_hooks?: { text: string; style?: string }[] } | null)?.pending_review_hooks;
+  const needsHookReview = batch.status === "needs_review" && pendingHooks && pendingHooks.length > 0;
+
+  const costSpent = Number((batch as unknown as { cost_spent?: number }).cost_spent ?? 0);
+  const costCap = Number((batch as unknown as { cost_cap?: number }).cost_cap ?? 0);
+
+  async function approveHooks() {
+    const r = await fetch(`/api/batches/${id}/approve`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stage: "hooks" }),
+    });
+    if (!r.ok) alert("Failed to approve");
+    else batchQ.refetch();
+  }
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
@@ -93,10 +108,32 @@ export default function BatchDetail() {
         </div>
       )}
 
+      {/* Review checkpoint */}
+      {needsHookReview && (
+        <div className="rounded-lg border border-[color:var(--color-acid)]/40 bg-[color:var(--color-acid)]/5 p-5">
+          <div className="font-medium mb-3">Review hooks before scripting</div>
+          <ol className="space-y-2 mb-4">
+            {pendingHooks.map((h, i) => (
+              <li key={i} className="text-sm flex items-start gap-2">
+                <span className="text-xs font-mono text-[color:var(--color-muted)] mt-0.5 w-6">{i + 1}.</span>
+                <span className="flex-1">{h.text}</span>
+                {h.style && <span className="text-[10px] uppercase tracking-wider text-[color:var(--color-muted)]">{h.style}</span>}
+              </li>
+            ))}
+          </ol>
+          <button
+            onClick={approveHooks}
+            className="text-sm bg-[color:var(--color-acid)] text-black px-4 py-2 rounded-md font-semibold hover:bg-[color:var(--color-acid)]/90"
+          >
+            Approve hooks &amp; continue
+          </button>
+        </div>
+      )}
+
       <section className="grid gap-4 grid-cols-2 md:grid-cols-4">
         <StatCard label="Status" value={batch.status.replace(/_/g, " ")} accent={batch.status === "ready" ? "green" : "amber"} />
         <StatCard label="Ads created" value={adsQ.data?.length ?? 0} accent="blue" />
-        <StatCard label="Credits spent" value={batch.credits_spent ?? 0} accent="acid" />
+        <StatCard label="Cost" value={`$${costSpent.toFixed(2)}${costCap > 0 ? ` / $${costCap.toFixed(2)}` : ""}`} accent="acid" />
         <StatCard label="Mode" value={batch.run_mode.replace(/_/g, " ")} />
       </section>
 

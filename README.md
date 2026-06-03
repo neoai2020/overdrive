@@ -33,6 +33,129 @@ npm run dev
 
 # 5. (optional) Seed mock data for your new account
 npx tsx scripts/seed.ts your@email.com
+
+# 6. (optional, Phase 2) Run the Inngest dev server so the generation pipeline executes
+#    Picks up /api/inngest automatically.
+npx inngest-cli@latest dev
+```
+
+---
+
+## Phase 2 — The Generation Pipeline
+
+The wizard's **Generate** button now kicks off a real async pipeline (Inngest +
+provider adapters) that turns one user input into N finished MP4 ads. By default
+every stage runs against `MockProvider`, so the pipeline is fully runnable
+without external API keys — flip rows in `/app/admin/models` once keys are added.
+
+### Architecture in one diagram
+
+```
+POST /api/batches  →  batches row (queued)  →  inngest.send "batch.created"
+                                                       ↓
+        runBatch(parent) : understand-offer → hooks → score → [review?] → fan-out
+                                                       ↓ (per ad)
+           runAd  : write-script → [review?] → presenter → voiceover (audio + word timings)
+                                  → build-shotlist → fan-out → qa → assemble (Modal FFmpeg)
+                                                       ↓ (per shot)
+              runShot : gen-still → submit clip → (webhook OR poll w/ backoff) → persist
+
+Realtime  ← batches/ads/shots updates ← Supabase ← runBatch/runAd/runShot writes
+Browser   ← (UI re-renders from DB state, no polling)
+```
+
+The DB is the message board. The browser never talks to a provider; the pipeline
+never talks to the browser. Every stage writes to `generation_events` for the
+admin Runs viewer.
+
+### Provider adapters
+
+Every external capability is behind a typed interface (`src/lib/providers/types.ts`):
+
+| Capability | Interface | Adapters shipped |
+|---|---|---|
+| LLM (5 tasks) | `LLMProvider.complete()` | `mock`, `anthropic` (Claude), `google` (Gemini) |
+| Voice         | `VoiceProvider.synthesize()` | `mock`, `elevenlabs` |
+| Image         | `ImageProvider.generate()` | `mock`, `google` (nano-banana), `fal` (Flux) |
+| Video         | `VideoProvider.submit/poll/parseWebhook()` | `mock`, `fal` (Kling/Veo/Sora/Hunyuan), `higgsfield` |
+
+The pipeline asks the **registry** (`src/lib/providers/registry.ts`) for the
+adapter assigned to a task. The registry reads `pipeline_config`, picks one row
+(weighted A/B), resolves the API key (`workspace key → global key → env`),
+constructs the adapter, returns it. Pipeline code never sees a model name unless
+it logs one.
+
+### Admin control panel (`/app/admin`, `is_admin = true` only)
+
+| Page | What it does |
+|---|---|
+| `/app/admin/models`     | Task → provider/model dropdown. Multiple rows per task = weighted A/B split. Disable/enable, edit params. |
+| `/app/admin/keys`       | Add provider API keys (AES-256-GCM encrypted at rest). Rotate or disable per key. Plaintext never leaves the server. |
+| `/app/admin/test`       | Run one input through N variants in parallel. Compare outputs + cost + latency side-by-side. Result rows persist in `task_ab_runs`. |
+| `/app/admin/presenters` | View the 25 seeded UGC presenters (the roster the pipeline picks from for identity consistency). |
+| `/app/admin/runs`       | Live tail of `generation_events`. Filter by batch/ad/stage/level. Click a row to inspect raw `data`. |
+
+To bootstrap the first admin (one-time): set `PIPELINE_BOOTSTRAP_SECRET=<random>`
+in env, sign up, then `POST /api/admin/bootstrap` with `{"secret": "<value>"}`.
+
+Or just flip the flag in SQL:
+```sql
+update profiles set is_admin = true where id = '<user-uuid>';
+```
+
+### Phase 2 environment variables
+
+```bash
+# Encryption — REQUIRED before adding any provider key
+PIPELINE_ENCRYPTION_KEY=                # 32 random bytes, base64 (44 chars)
+# Generate: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+
+# Inngest — leave blank to use the local dev runner via `inngest-cli`
+INNGEST_EVENT_KEY=
+INNGEST_SIGNING_KEY=
+
+# Provider keys — admin can also set these in the DB via /app/admin/keys
+ANTHROPIC_API_KEY=
+GOOGLE_API_KEY=
+ELEVENLABS_API_KEY=
+FAL_KEY=
+HIGGSFIELD_API_KEY=
+
+# Modal FFmpeg assembly service — leave blank to use the in-process MockFfmpeg
+# fallback (which reuses the first shot's URL as the final video — fine for
+# local dev but not production).
+MODAL_FFMPEG_ENDPOINT=
+MODAL_FFMPEG_SECRET=
+
+# Optional: enable POST /api/admin/bootstrap to promote the first admin
+PIPELINE_BOOTSTRAP_SECRET=
+```
+
+### Deploying the Modal FFmpeg service
+
+```bash
+pip install modal
+modal token new
+modal deploy modal/ffmpeg_assemble.py
+# → prints the public URL; copy it into MODAL_FFMPEG_ENDPOINT.
+```
+
+The service runs on Modal's serverless infra (FFmpeg pre-installed, scales to
+zero, ~$0.00012/sec CPU). It downloads the per-shot clips + VO audio, concats,
+burns word-level captions from `word_timings`, transcodes to 9:16 H.264, generates
+a thumbnail, and uploads both straight to Supabase Storage via the service-role
+key. Returns `{ duration_seconds, bytes, cost_usd }`.
+
+### Smoke-testing the pipeline
+
+```bash
+# Quick: verify registry + mock adapters + DB writes work
+npx tsx scripts/smoke-pipeline.ts your@email.com
+
+# Full end-to-end: requires both servers running
+npx inngest-cli@latest dev          # terminal 1
+npm run dev                          # terminal 2
+# Then sign in, run the Generate wizard. Watch /app/admin/runs for live events.
 ```
 
 ---

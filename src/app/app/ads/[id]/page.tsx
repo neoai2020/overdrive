@@ -27,6 +27,39 @@ export default function AdDetail() {
 
   useRealtimeRow("ads", id, ["ads", id]);
   useRealtimeTable("ad_versions", ["ad_versions", "by-ad", id], `ad_id=eq.${id}`);
+  useRealtimeTable("shots", ["shots", "by-ad", id], `ad_id=eq.${id}`);
+
+  const shotsQ = useQuery({
+    queryKey: ["shots", "by-ad", id],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("shots")
+        .select("id, idx, kind, vo_text, vo_start, vo_end, on_screen, status, video_url, attempts, cost_usd")
+        .eq("ad_id", id)
+        .order("idx", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const regenerateMut = useMutation({
+    mutationFn: async (fromStage: string) => {
+      const res = await fetch(`/api/ads/${id}/regenerate`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ from_stage: fromStage }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? "Regenerate failed");
+      return res.json();
+    },
+    onSuccess: () => {
+      toast.success("Regeneration kicked off — watch the shots update in real time.");
+      qc.invalidateQueries({ queryKey: ["ads", id] });
+      qc.invalidateQueries({ queryKey: ["shots", "by-ad", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const adQ = useQuery({
     queryKey: ["ads", id],
@@ -154,8 +187,8 @@ export default function AdDetail() {
             <Button variant="secondary" onClick={() => duplicateMut.mutate()} disabled={duplicateMut.isPending}>
               <Copy className="w-4 h-4" /> Duplicate
             </Button>
-            <Button variant="secondary" onClick={() => toast.info("Regeneration ships in Phase 2 (calls service worker).")}>
-              <RefreshCw className="w-4 h-4" /> Regenerate
+            <Button variant="secondary" onClick={() => regenerateMut.mutate("write_script")} disabled={regenerateMut.isPending}>
+              <RefreshCw className="w-4 h-4" /> {regenerateMut.isPending ? "Queuing…" : "Regenerate"}
             </Button>
             <Button onClick={() => setPushOpen(true)}>
               <Send className="w-4 h-4" /> Push to ad set
@@ -261,6 +294,42 @@ export default function AdDetail() {
               </div>
             </CardContent>
           </Card>
+
+          {shotsQ.data && shotsQ.data.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Shots</CardTitle>
+                <CardDescription>The video provider renders each shot independently, then FFmpeg stitches them with the voiceover.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="divide-y divide-white/5 -mx-5">
+                  {shotsQ.data.map((s) => (
+                    <li key={s.id} className="px-5 py-3 flex items-start gap-3">
+                      <span className="font-mono text-[10px] text-[color:var(--color-faint)] w-8 mt-0.5">#{s.idx + 1}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm leading-snug truncate">{s.vo_text ?? <span className="text-[color:var(--color-faint)]">—</span>}</div>
+                        <div className="text-[10px] text-[color:var(--color-faint)] uppercase tracking-wider mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
+                          <span>{s.kind}</span>
+                          {typeof s.vo_start === "number" && typeof s.vo_end === "number" && <span>{(s.vo_end - s.vo_start).toFixed(1)}s</span>}
+                          {s.on_screen && <span className="truncate">on-screen · {s.on_screen}</span>}
+                          {(s.attempts ?? 0) > 0 && <span>attempt {s.attempts}</span>}
+                          {typeof s.cost_usd === "number" && s.cost_usd > 0 && <span>${s.cost_usd.toFixed(3)}</span>}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {s.video_url && (
+                          <a href={s.video_url} target="_blank" rel="noreferrer" className="text-xs text-[color:var(--color-acid)] hover:underline">
+                            preview
+                          </a>
+                        )}
+                        <StatusPill status={s.status as string} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
 
           {versionsQ.data && versionsQ.data.length > 1 && (
             <Card>
