@@ -12,6 +12,10 @@ domains:
 
 # Next.js 16 App Router app — runs as a Node web service.
 # / serves the static landing via a beforeFiles rewrite in next.config.ts.
+#
+# We use a Dockerfile (not the Node buildpack) because the buildpack
+# kept fighting us on Node version + lockfile semantics. The Dockerfile
+# pins Node 22 LTS, owns the install step, and ships a minimal runner.
 services:
   - name: overdrive-web
     github:
@@ -19,19 +23,10 @@ services:
       branch: main
       deploy_on_push: true
     source_dir: /
+    dockerfile_path: Dockerfile
     instance_size_slug: basic-xs
     instance_count: 1
     http_port: 8080
-
-    # DO's Node buildpack auto-runs `npm ci` if it sees package-lock.json,
-    # otherwise `npm install`. We deliberately do NOT commit the lockfile —
-    # one generated on macOS embeds darwin-only optional deps
-    # (@next/swc-darwin-arm64, @tailwindcss/oxide-darwin-arm64), which makes
-    # `npm ci` blow up on DO's Linux builder. `npm install` resolves the
-    # right platform deps on the fly. See .gitignore.
-    build_command: npm run build
-    # DO sets $PORT; bind 0.0.0.0 so the platform's healthcheck can reach us.
-    run_command: npm start -- --port $PORT --hostname 0.0.0.0
 
     health_check:
       http_path: /
