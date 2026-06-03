@@ -10,6 +10,12 @@
 !.yarn/releases
 !.yarn/versions
 
+# Lockfile is gitignored on purpose: a macOS-generated lockfile pins
+# darwin-only optional deps (@next/swc-darwin-arm64, @tailwindcss/oxide-
+# darwin-arm64) that crash `npm ci` on Linux build hosts. Let `npm install`
+# resolve platform deps at install time. See .do/app.yaml for context.
+package-lock.json
+
 # testing
 /coverage
 

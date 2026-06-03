@@ -23,10 +23,13 @@ services:
     instance_count: 1
     http_port: 8080
 
-    # npm install (not `npm ci`) — lockfile has darwin-only optionalDependencies
-    # (@next/swc-darwin-arm64, @tailwindcss/oxide-darwin-arm64, etc.) and `npm ci`
-    # treats the platform mismatch on DO's Linux builder as a hard fail.
-    build_command: npm install --no-audit --no-fund && npm run build
+    # DO's Node buildpack auto-runs `npm ci` if it sees package-lock.json,
+    # otherwise `npm install`. We deliberately do NOT commit the lockfile —
+    # one generated on macOS embeds darwin-only optional deps
+    # (@next/swc-darwin-arm64, @tailwindcss/oxide-darwin-arm64), which makes
+    # `npm ci` blow up on DO's Linux builder. `npm install` resolves the
+    # right platform deps on the fly. See .gitignore.
+    build_command: npm run build
     # DO sets $PORT; bind 0.0.0.0 so the platform's healthcheck can reach us.
     run_command: npm start -- --port $PORT --hostname 0.0.0.0
 
